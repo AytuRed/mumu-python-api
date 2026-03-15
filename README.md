@@ -1,5 +1,7 @@
 # Mumu模拟器Python API
 
+本项目由 DreamStudio Research 维护。
+
 - [Mumu模拟器Python API](#mumu模拟器python-api)
     - [项目介绍](#项目介绍)
     - [如何使用？](#如何使用)
@@ -129,6 +131,13 @@
 
 该项目要求你已经安装了MuMu模拟器，且Mumu模拟器版本`>=4.0.0`以上。
 
+### 近期更新（1.1.0）
+
+- 修复了 ADB 点击/输入命令在 MuMu 上的 shell 调用兼容性问题。
+- 修复了并发场景下 `select` 状态互串问题，`Mumu` 实例索引上下文已线程隔离。
+- `auto.create_handle` 新增 `backend` 和 `fps` 参数，默认 `backend='auto'`。
+- `backend='auto'` 会优先使用 MuMu 官方高性能截图 SDK（`mumu_sdk`），失败时自动回退到 `scrcpy`。
+
 ## 如何使用？
 
 将本项目安装到您的Python环境中
@@ -208,6 +217,8 @@ mumu.power.start()
 ### 注意
 
 带`*`的类是本项目提供的`超类`，并不是MuMu模拟器的API原生提供。
+
+多线程场景建议在每个线程里单独执行一次`select(...)`后再调用 API，避免跨线程共享未选择索引的对象。
 
 ## API类
 
@@ -1572,20 +1583,25 @@ Mumu().select(2).adb.clear('com.miHoYo.Yuanshen')
 
 先决条件：需要安装`opencv-python`库，可以通过`pip install opencv-python`安装。
 
-如果希望使用本项目自带的投屏功能，需要安装`scrcpy`，可以通过`pip install scrcpy-client`安装。
+实时帧采集支持两种后端：
+
+- `mumu_sdk`（推荐）：使用 MuMu 官方高性能截图接口，通常速度更高。
+- `scrcpy`：兼容后端，需要安装`scrcpy-client`（`pip install scrcpy-client`）。
 
 #### 处理模拟器实时帧（create_handle）
 
-该方法接受一个参数`handle`，传入一个方法，用于处理模拟器的帧。
+该方法接受三个参数：
 
-该方法基于`scrcpy`实现，如果您的应用对该软件有限制，请勿使用。
+- `handle`：处理帧的回调方法。
+- `backend`：`auto`/`mumu_sdk`/`scrcpy`，默认`auto`。
+- `fps`：仅对`mumu_sdk`生效，表示采集帧率，默认`30`。
 
-使用该方法，会自动创建`2`个子线程，一个用于接收模拟器的帧，一个用于处理帧。
+当`backend='auto'`时，优先使用`mumu_sdk`，如果不可用会自动回退到`scrcpy`。
 
 `handle`方法包含两个参数`frame`和`mumu`，分别表示帧和当前模拟器对象。
 
 `frame`为`numpy`数组，可以直接使用`opencv`的方法处理。
-`mumu`为当前模拟器对象，仅选中了当前模拟器。
+`mumu`为当前模拟器对象，仅选中了当前模拟器（线程隔离，可直接调用该对象的API）。
 
 举例：处理索引为2的模拟器的帧
 
@@ -1607,6 +1623,18 @@ def handle(frame, mumu):
 
 
 Mumu().select(2, 4, 6).auto.create_handle(handle)
+```
+
+举例：强制使用MuMu SDK并设置帧率
+
+```python
+Mumu().select(2).auto.create_handle(handle, backend='mumu_sdk', fps=60)
+```
+
+举例：强制使用scrcpy后端
+
+```python
+Mumu().select(2).auto.create_handle(handle, backend='scrcpy')
 ```
 
 #### 保存模拟器实时帧（save）

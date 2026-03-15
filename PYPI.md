@@ -30,7 +30,7 @@ python -m twine upload --repository testpypi dist/*
 安装验证：
 
 ```powershell
-python -m pip install -i https://test.pypi.org/simple/ mumu-python-api
+python -m pip install -i https://test.pypi.org/simple/ mumu-python-api-wlkjyy
 ```
 
 ## 5. 上传到正式 PyPI
