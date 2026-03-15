@@ -38,7 +38,7 @@ class Window:
 
         raise RuntimeError(retval)
 
-    def layout(self, x: int=None, y: int=None, width: int=None, height: int=None) -> bool:
+    def layout(self, x: int = None, y: int = None, width: int = None, height: int = None) -> bool:
         """
             设置模拟器位置和大小(layout)
         :param x: 选择修改窗口的X轴位置，以屏幕左上角为原点
@@ -50,19 +50,19 @@ class Window:
         self.utils.set_operate('control')
         args = ['layout_window']
 
-        if x:
+        if x is not None:
             args.append('-px')
             args.append(str(x))
 
-        if y:
+        if y is not None:
             args.append('-py')
             args.append(str(y))
 
-        if width:
+        if width is not None:
             args.append('-width')
             args.append(str(width))
 
-        if height:
+        if height is not None:
             args.append('-height')
             args.append(str(height))
 

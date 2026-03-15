@@ -48,11 +48,11 @@ class Setting:
             for key in ret.keys():
                 # 类型转换
                 val = ret[key]
-                if val.isdigit():
+                if isinstance(val, str) and val.isdigit():
                     ret[key] = int(val)
-                elif val.lower() == "true":
+                elif isinstance(val, str) and val.lower() == "true":
                     ret[key] = True
-                elif val.lower() == "false":
+                elif isinstance(val, str) and val.lower() == "false":
                     ret[key] = False
 
             # return ret
@@ -80,11 +80,11 @@ class Setting:
                 kwargs[key] = "__null__"
 
             new_key = key
-            if '___' in key:
-                new_key = key.replace('___', '-')
+            if '___' in new_key:
+                new_key = new_key.replace('___', '-')
 
-            if '__' in key:
-                new_key = key.replace('__', '.')
+            if '__' in new_key:
+                new_key = new_key.replace('__', '.')
 
             command_args.extend(["-k", new_key, "-val", str(kwargs[key])])
 

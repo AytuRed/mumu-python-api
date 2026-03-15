@@ -46,6 +46,8 @@ class Performance:
         :param mem_gb: 内存大小
         :return:
         """
+        mem_gb = max(1, mem_gb)
+
         return Setting(self.utils).set(
             performance_mode='custom',
             performance_mem__custom=mem_gb
@@ -69,17 +71,19 @@ class Performance:
         :param perf: 资源占用更小
         :return:
         """
-        if auto:
-            return Setting(self.utils).set(
-                renderer_strategy='auto'
-            )
-        elif dis:
+        if dis:
             return Setting(self.utils).set(
                 renderer_strategy='dis'
             )
-        elif perf:
+
+        if perf:
             return Setting(self.utils).set(
                 renderer_strategy='perf'
+            )
+
+        if auto:
+            return Setting(self.utils).set(
+                renderer_strategy='auto'
             )
 
     def disk_readonly(self, enable: bool = True):

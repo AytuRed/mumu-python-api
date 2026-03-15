@@ -7,13 +7,14 @@
 import copy
 import json
 import time
+import threading
+import warnings
 
 import cv2
 import numpy
 import collections
-from adbutils import adb
-import threading
 import mumu.config as config
+from mumu.api.screen.nemu_sdk import NemuSDK
 
 
 class Gui:
@@ -30,66 +31,122 @@ class Gui:
         self.utils.set_operate("adb")
         ret_code, retval = self.utils.run_command([''])
         if ret_code != 0:
-            return self
+            return
 
         try:
             data = json.loads(retval)
         except json.JSONDecodeError:
-            return None, None
+            return
 
         for key, value in data.items():
             if key == "adb_host" and "adb_port" in data:
                 yield data["adb_host"], data["adb_port"], self.utils.get_vm_id()
                 return
 
+            if not isinstance(value, dict):
+                continue
+
             if 'errcode' in value:
                 continue
             else:
-                # connect_list.append((value.get("adb_host"), value.get("adb_port")))
                 yield value.get("adb_host"), value.get("adb_port"), key
 
-        return
+    def __list_vm_ids_from_info(self):
+        self.utils.set_operate("info")
+        ret_code, retval = self.utils.run_command([])
+        if ret_code != 0:
+            return []
+
+        try:
+            data = json.loads(retval)
+        except json.JSONDecodeError:
+            return []
+
+        vm_ids = []
+        if isinstance(data, dict):
+            if "index" in data:
+                try:
+                    vm_ids.append(int(data["index"]))
+                except (TypeError, ValueError):
+                    pass
+            else:
+                for key, value in data.items():
+                    if str(key).isdigit():
+                        vm_ids.append(int(key))
+                        continue
+                    if isinstance(value, dict) and "index" in value:
+                        try:
+                            vm_ids.append(int(value["index"]))
+                        except (TypeError, ValueError):
+                            pass
+
+        return list(dict.fromkeys(vm_ids))
+
+    def __resolve_target_vm_ids(self):
+        vm_id = self.utils.get_vm_id()
+        if vm_id not in (None, "all"):
+            vm_ids = []
+            for part in str(vm_id).split(","):
+                part = part.strip()
+                if part.isdigit():
+                    vm_ids.append(int(part))
+            return list(dict.fromkeys(vm_ids))
+
+        vm_ids = []
+        for _, _, vm_id_row in list(self.__connect() or []):
+            if vm_id_row in (None, "all"):
+                continue
+            for part in str(vm_id_row).split(","):
+                part = part.strip()
+                if part.isdigit():
+                    vm_ids.append(int(part))
+
+        vm_ids = list(dict.fromkeys(vm_ids))
+        if vm_ids:
+            return vm_ids
+
+        return self.__list_vm_ids_from_info()
 
     def __vm_handle_frame(self, handle, vm_id):
+        mumu_root = self.utils.get_mumu_root_object()
+        mumu_ctx = copy.copy(mumu_root).select(vm_id)
+
         while True:
-            if vm_id in config.FRAME_CACHE:
+            with config.FRAME_LOCK:
+                frame = config.FRAME_CACHE.get(vm_id)
 
-                while True:
-                    frame = config.FRAME_CACHE[vm_id]
-
-                    if frame is not None:
-                        handle(frame, self.utils.get_mumu_root_object().select(vm_id))
-                        time.sleep(0.01)
-
-            else:
+            if frame is None:
+                time.sleep(0.01)
                 continue
 
-    def create_handle(self, handle_func):
-        """
-            创建帧处理函数
-        :param handle_func:
-        :return:
-        """
+            handle(frame, mumu_ctx)
+            time.sleep(0.01)
+
+    def __create_handle_by_scrcpy(self, handle_func):
         try:
             import scrcpy
-        except:
+            from adbutils import adb
+        except Exception as exc:
             raise RuntimeError(
-                "scrcpy is not installed, please install it first by running 'pip install scrcpy-client'")
+                "scrcpy backend requires adbutils and scrcpy-client; install with 'pip install adbutils scrcpy-client'"
+            ) from exc
 
         client_list = []
-
-        for (k, v, id) in self.__connect():
+        connect_list = list(self.__connect() or [])
+        for (k, v, id) in connect_list:
             host = str(k) + ":" + str(v)
             adb.connect(host)
             for i in adb.device_list():
                 if i.serial == host:
                     client = scrcpy.Client(device=i)
 
-                    threading.Thread(target=self.__vm_handle_frame, args=(handle_func, id)).start()
+                    threading.Thread(target=self.__vm_handle_frame, args=(handle_func, id), daemon=True).start()
 
                     def func(vm_id):
                         def save_frame(frame):
-                            config.FRAME_CACHE[vm_id] = frame
+                            with config.FRAME_LOCK:
+                                config.FRAME_CACHE[vm_id] = frame
+                                config.FRAME_UPDATE_TIME[vm_id] = time.time()
                             return
 
                         return save_frame
@@ -98,6 +155,87 @@ class Gui:
                     client_list.append(client)
         for cli_row in client_list:
             cli_row.start(threaded=True, daemon_threaded=True)
+
+        if not client_list:
+            raise RuntimeError("scrcpy backend found no running device to attach")
+
+        return True
+
+    def __sdk_capture_loop(self, session, handle, vm_id, fps):
+        mumu_root = self.utils.get_mumu_root_object()
+        mumu_ctx = copy.copy(mumu_root).select(vm_id)
+        interval = 1.0 / max(1, int(fps))
+
+        try:
+            while True:
+                frame = session.capture_frame()
+                with config.FRAME_LOCK:
+                    config.FRAME_CACHE[str(vm_id)] = frame
+                    config.FRAME_UPDATE_TIME[str(vm_id)] = time.time()
+                handle(frame, mumu_ctx)
+                time.sleep(interval)
+        finally:
+            session.close()
+
+    def __create_handle_by_mumu_sdk(self, handle_func, fps=30):
+        mumu_manager_path = self.utils.get_mumu_path() or config.MUMU_PATH
+        sdk = NemuSDK(mumu_manager_path)
+        vm_ids = self.__resolve_target_vm_ids()
+        if not vm_ids:
+            raise RuntimeError("mumu_sdk backend cannot resolve target vm index")
+
+        started = 0
+        for vm_id in vm_ids:
+            try:
+                session = sdk.create_session(vm_index=vm_id, display_id=0)
+            except Exception as exc:
+                warnings.warn(f"mumu_sdk backend skip vm {vm_id}: {exc}")
+                continue
+
+            threading.Thread(
+                target=self.__sdk_capture_loop,
+                args=(session, handle_func, str(vm_id), fps),
+                daemon=True,
+            ).start()
+            started += 1
+
+        if started == 0:
+            raise RuntimeError("mumu_sdk backend failed to start capture threads")
+
+        return True
+
+    def create_handle(self, handle_func, backend: str = "auto", fps: int = 30):
+        """
+            创建帧处理函数
+        :param handle_func: 每帧回调函数，签名为 handle(frame, mumu)
+        :param backend: auto/mumu_sdk/scrcpy
+        :param fps: mumu_sdk 轮询帧率，默认 30
+        :return:
+        """
+        backend = (backend or "auto").lower()
+        if backend not in {"auto", "mumu_sdk", "scrcpy"}:
+            raise ValueError("backend must be one of: auto, mumu_sdk, scrcpy")
+
+        sdk_error = None
+        if backend in {"auto", "mumu_sdk"}:
+            try:
+                return self.__create_handle_by_mumu_sdk(handle_func, fps=fps)
+            except Exception as exc:
+                sdk_error = exc
+                if backend == "mumu_sdk":
+                    raise
+
+        if backend in {"auto", "scrcpy"}:
+            try:
+                return self.__create_handle_by_scrcpy(handle_func)
+            except Exception as exc:
+                if backend == "scrcpy":
+                    raise
+                raise RuntimeError(
+                    f"create_handle failed with mumu_sdk ({sdk_error}) and scrcpy ({exc})"
+                ) from exc
+
+        raise RuntimeError("create_handle failed unexpectedly")
 
     def locateOnScreen(self, haystack_frame, needle_image, confidence=0.8, grayscale=None):
         """
@@ -158,8 +296,6 @@ class Gui:
             arr.append(r)
 
         return arr
-
-
 
     def save(self, frame, path):
         """

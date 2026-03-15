@@ -6,7 +6,6 @@
 # @Software: PyCharm
 import json
 import os.path
-import time
 import warnings
 from typing import Union
 
@@ -19,7 +18,14 @@ class Adb:
     def __init__(self, utils):
         self.utils = utils
 
-    # __connect_list = None
+    def __run_adb_cmd(self, cmd: str):
+        self.utils.set_operate('adb')
+        ret_code, retval = self.utils.run_command(['-c', cmd])
+
+        if ret_code == 0:
+            return True
+
+        raise RuntimeError(retval or f"adb command failed: {cmd}")
 
     def get_connect_info(self):
         """
@@ -41,6 +47,10 @@ class Adb:
         for key, value in data.items():
             if key == "adb_host" and "adb_port" in data:
                 return data["adb_host"], data["adb_port"]
+
+            if not isinstance(value, dict):
+                continue
+
             if 'errcode' in value:
                 adb_info[key] = (None, None)
             else:
@@ -55,13 +65,7 @@ class Adb:
         :param y: 纵坐标
         :return:
         """
-        self.utils.set_operate('adb')
-        ret_code, retval = self.utils.run_command(['-c', 'input', 'tap', str(x), str(y)])
-
-        if ret_code == 0:
-            return True
-
-        raise RuntimeError(retval)
+        return self.__run_adb_cmd(f"shell input tap {x} {y}")
 
     def swipe(self, from_x: int, from_y: int, to_x: int, to_y: int, duration: int = 500):
         """
@@ -73,14 +77,7 @@ class Adb:
         :param duration: 滑动时间
         :return:
         """
-        self.utils.set_operate('adb')
-        ret_code, retval = self.utils.run_command(
-            ['-c', 'input', 'swipe', str(from_x), str(from_y), str(to_x), str(to_y), str(duration)])
-
-        if ret_code == 0:
-            return True
-
-        raise RuntimeError(retval)
+        return self.__run_adb_cmd(f"shell input swipe {from_x} {from_y} {to_x} {to_y} {duration}")
 
     def input_text(self, text: str):
         """
@@ -88,13 +85,7 @@ class Adb:
         :param text: 输入的文本
         :return:
         """
-        self.utils.set_operate('adb')
-        ret_code, retval = self.utils.run_command(['-c', 'input', 'text', text])
-
-        if ret_code == 0:
-            return True
-
-        raise RuntimeError(retval)
+        return self.__run_adb_cmd(f"input_text {text}")
 
     def key_event(self, key: Union[int, str]):
         """
@@ -102,13 +93,7 @@ class Adb:
         :param key: 键值
         :return:
         """
-        self.utils.set_operate('adb')
-        ret_code, retval = self.utils.run_command(['-c', 'input', 'keyevent', str(key)])
-
-        if ret_code == 0:
-            return True
-
-        raise RuntimeError(retval)
+        return self.__run_adb_cmd(f"shell input keyevent {key}")
 
     def __connect(self):
         """
@@ -120,25 +105,25 @@ class Adb:
         ret_code, retval = self.utils.run_command([''])
 
         if ret_code != 0:
-            return self
+            return
 
         try:
             data = json.loads(retval)
         except json.JSONDecodeError:
-            return None, None
+            return
 
         for key, value in data.items():
             if key == "adb_host" and "adb_port" in data:
                 yield data["adb_host"], data["adb_port"]
                 return
 
+            if not isinstance(value, dict):
+                continue
+
             if 'errcode' in value:
                 continue
             else:
-                # connect_list.append((value.get("adb_host"), value.get("adb_port")))
                 yield value.get("adb_host"), value.get("adb_port")
-
-        return
 
     def push(self, src: str, path: str):
         """
@@ -151,12 +136,17 @@ class Adb:
         if not os.path.exists(src):
             raise FileNotFoundError(f"File not found: {src}")
 
-        if not os.path.exists(config.ADB_PATH):
-            raise FileNotFoundError(f"adb not found in {config.ADB_PATH}")
+        adb_path = self.utils.get_adb_path() or config.ADB_PATH
+        if not os.path.exists(adb_path):
+            raise FileNotFoundError(f"adb not found in {adb_path}")
 
-        for (host, port) in self.__connect():
-            ret_code, retval = self.utils.run_command([config.ADB_PATH, '-s', f"{host}:{port}", 'push', src, path],
-                                                 mumu=False)
+        connect_list = list(self.__connect() or [])
+        if not connect_list:
+            raise RuntimeError("No available adb connections found")
+
+        for (host, port) in connect_list:
+            ret_code, retval = self.utils.run_command([adb_path, '-s', f"{host}:{port}", 'push', src, path],
+                                                      mumu=False)
 
             if ret_code != 0:
                 warnings.warn(retval)
@@ -186,12 +176,17 @@ class Adb:
         :return:
         """
 
-        if not os.path.exists(config.ADB_PATH):
-            raise FileNotFoundError(f"adb not found in {config.ADB_PATH}")
+        adb_path = self.utils.get_adb_path() or config.ADB_PATH
+        if not os.path.exists(adb_path):
+            raise FileNotFoundError(f"adb not found in {adb_path}")
 
-        for (host, port) in self.__connect():
-            ret_code, retval = self.utils.run_command([config.ADB_PATH, '-s', f"{host}:{port}", 'pull', src, path],
-                                                 mumu=False)
+        connect_list = list(self.__connect() or [])
+        if not connect_list:
+            raise RuntimeError("No available adb connections found")
+
+        for (host, port) in connect_list:
+            ret_code, retval = self.utils.run_command([adb_path, '-s', f"{host}:{port}", 'pull', src, path],
+                                                      mumu=False)
 
             if ret_code != 0:
                 warnings.warn(retval)
@@ -204,10 +199,4 @@ class Adb:
         :param package: 应用包名
         :return:
         """
-        self.utils.set_operate('adb')
-        ret_code, retval = self.utils.run_command(['-c', 'pm', 'clear', package])
-
-        if ret_code == 0:
-            return True
-
-        raise RuntimeError(retval)
+        return self.__run_adb_cmd(f"shell pm clear {package}")

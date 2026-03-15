@@ -26,12 +26,19 @@ class AndroidEvent:
 
         raise RuntimeError(ret_val)
 
-    def rotates(self) -> bool:
+    def rotate(self) -> bool:
         """
             屏幕旋转
         :return:
         """
         return self.__action("rotate")
+
+    def rotates(self) -> bool:
+        """
+            rotate 的兼容别名
+        :return:
+        """
+        return self.rotate()
 
     def go_home(self) -> bool:
         """

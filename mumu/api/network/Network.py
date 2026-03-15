@@ -17,9 +17,21 @@ class Network:
             获取所有网桥适配器
         :return:
         """
-        card = Setting().get('net_bridge_card.list')
-        card = card[1:-1]
-        return card.split(',')
+        card = Setting(self.utils).get('net_bridge_card.list')
+        if isinstance(card, list):
+            return card
+
+        if not isinstance(card, str):
+            return []
+
+        card = card.strip()
+        if card.startswith('[') and card.endswith(']'):
+            card = card[1:-1]
+
+        if not card:
+            return []
+
+        return [item.strip() for item in card.split(',')]
 
     def nat(self):
         """

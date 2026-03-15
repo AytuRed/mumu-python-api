@@ -15,6 +15,8 @@ class utils:
     __VM_INDEX = None
     __OPERATE = None
     __MUMU_ROOT_OBJECT = None
+    __MUMU_PATH = None
+    __ADB_PATH = None
 
     def set_vm_index(self, vm_index):
         """
@@ -33,6 +35,7 @@ class utils:
         :return:
         """
         self.__OPERATE = operate
+        return self
 
     def set_mumu_root_object(self, mumu_root_object):
         """
@@ -42,6 +45,20 @@ class utils:
         """
         self.__MUMU_ROOT_OBJECT = mumu_root_object
         return self
+
+    def set_mumu_path(self, mumu_path: str):
+        self.__MUMU_PATH = mumu_path
+        return self
+
+    def get_mumu_path(self):
+        return self.__MUMU_PATH
+
+    def set_adb_path(self, adb_path: str):
+        self.__ADB_PATH = adb_path
+        return self
+
+    def get_adb_path(self):
+        return self.__ADB_PATH
 
     def get_mumu_root_object(self):
         return self.__MUMU_ROOT_OBJECT
@@ -58,7 +75,8 @@ class utils:
         """
         try:
             if mumu:
-                command_extend = [config.MUMU_PATH]
+                mumu_path = self.__MUMU_PATH or config.MUMU_PATH
+                command_extend = [mumu_path]
 
                 if self.__OPERATE is not None:
                     if isinstance(self.__OPERATE, list):
@@ -73,19 +91,13 @@ class utils:
             else:
                 command_extend = command
 
-            result = subprocess.run(command_extend, shell=True, check=False, stdout=subprocess.PIPE,
+            result = subprocess.run(command_extend, shell=False, check=False, stdout=subprocess.PIPE,
                                     stderr=subprocess.PIPE,
                                     encoding='utf-8')
 
             ret_code = result.returncode
-            retval = result.stdout
+            retval = result.stdout if result.stdout else result.stderr
 
-            # print(retval)
-
-            return ret_code, retval
-
-        except subprocess.CalledProcessError as e:
-            ret_code = e.returncode
-            retval = e.stderr
-
-            return ret_code, retval
+            return ret_code, retval.strip()
+        except OSError as e:
+            return 1, str(e)
