@@ -142,6 +142,16 @@
 
 将本项目安装到您的Python环境中
 
+```powershell
+pip install mumu-python-api-wlkjyy
+```
+
+如需 GUI 自动化相关依赖（OpenCV + scrcpy）：
+
+```powershell
+pip install "mumu-python-api-wlkjyy[auto]"
+```
+
 导入模块
 
 ```python
