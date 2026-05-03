@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time : 2024/7/29 下午2:59
+# @Time : 2024/7/29 14:59
 # @Author : wlkjyy
 # @File : bridge.py
 # @Software: PyCharm
@@ -12,12 +12,12 @@ class Bridge:
         self.utils = utils
 
     """
-        网络桥接驱动
+        Network bridge driver.
     """
 
     def install(self):
         """
-            安装网卡桥接驱动
+            Install the NIC bridge driver.
         :return:
         """
         self.utils.set_operate(['driver', 'install'])
@@ -29,7 +29,7 @@ class Bridge:
 
     def uninstall(self):
         """
-            卸载网卡桥接驱动
+            Uninstall the NIC bridge driver.
         :return:
         """
         self.utils.set_operate(['driver', 'uninstall'])

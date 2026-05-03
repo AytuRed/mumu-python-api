@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time : 2024/7/29 下午2:40
+# @Time : 2024/7/29 14:40
 # @Author : wlkjyy
 # @File : Core.py
 # @Software: PyCharm
@@ -16,8 +16,8 @@ class Core:
 
     def create(self, number: int = 1) -> list:
         """
-            创建模拟器
-        :param number: 创建数量
+            Create emulator(s).
+        :param number: number to create
         :return:
         """
         if number <= 0:
@@ -43,8 +43,8 @@ class Core:
 
     def clone(self, number: int = 1) -> list:
         """
-            克隆模拟器
-        :param number: 克隆数量
+            Clone emulator(s).
+        :param number: number to clone
         :return:
         """
         if number <= 0:
@@ -70,7 +70,7 @@ class Core:
 
     def delete(self) -> bool:
         """
-            删除模拟器
+            Delete the emulator.
         :return:
         """
         self.utils.set_operate("delete")
@@ -84,8 +84,8 @@ class Core:
 
     def rename(self, name: str) -> bool:
         """
-            重命名模拟器
-        :param name: 模拟器名称
+            Rename the emulator.
+        :param name: emulator name
         :return:
         """
         self.utils.set_operate("rename")
@@ -102,10 +102,10 @@ class Core:
 
     def export(self, dir: str, name: str, zip: bool = False) -> bool:
         """
-            导出模拟器
-        :param dir: 备份的目录
-        :param name: 备份文件的名称
-        :param zip:  备份文件是否压缩
+            Export an emulator.
+        :param dir: backup directory
+        :param name: backup file name
+        :param zip:  whether to compress the backup file
         :return:
         """
 
@@ -122,9 +122,9 @@ class Core:
 
     def import_(self, path: Union[str, list], number: int = 0) -> bool:
         """
-            导入模拟器
-        :param path:要导入的 mumudata 文件路径
-        :param number:导入次数
+            Import an emulator.
+        :param path: path(s) of the mumudata file(s) to import
+        :param number: number of imports
         :return:
         """
         if number <= 0:
@@ -152,8 +152,8 @@ class Core:
 
     def limit_cpu(self, cap: int = 100) -> bool:
         """
-            限制CPU
-        :param cap: CPU限制，范围0-100
+            Limit CPU usage.
+        :param cap: CPU cap, range 0-100
         :return:
         """
         if cap < 0 or cap > 100:

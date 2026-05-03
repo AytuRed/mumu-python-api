@@ -1,167 +1,167 @@
-# Mumu模拟器Python API
+# MuMu Emulator Python API
 
-本项目由 DreamStudio Research 维护。
+This project is maintained by DreamStudio Research.
 
-- [Mumu模拟器Python API](#mumu模拟器python-api)
-    - [项目介绍](#项目介绍)
-    - [如何使用？](#如何使用)
-        - [设置MuMuManager路径](#设置mumumanager路径)
-        - [模拟器索引说明](#模拟器索引说明)
-        - [选择模拟器](#选择模拟器)
-        - [举个例子](#举个例子)
-        - [注意](#注意)
-    - [API类](#api类)
-        - [驱动类（driver）](#驱动类driver)
-            - [网络桥接驱动（bride）](#网络桥接驱动bride)
-                - [安装桥接驱动（install）](#安装桥接驱动install)
-                - [卸载桥接驱动（uninstall）](#卸载桥接驱动uninstall)
-        - [权限类（permission）](#权限类permission)
-            - [\* ROOT权限（root）](#-root权限root)
-                - [开启ROOT权限（enable）](#开启root权限enable)
-                - [关闭ROOT权限（disable）](#关闭root权限disable)
-        - [电源类（power）](#电源类power)
-            - [启动模拟器（start）](#启动模拟器start)
-            - [关闭模拟器（shutdown|stop）](#关闭模拟器shutdownstop)
-            - [重启模拟器（restart|reboot）](#重启模拟器restartreboot)
-        - [窗口类（window）](#窗口类window)
-            - [显示窗口（show）](#显示窗口show)
-            - [隐藏窗口（hidden）](#隐藏窗口hidden)
-            - [调整窗口大小或位置（layout）](#调整窗口大小或位置layout)
-        - [应用类（app）](#应用类app)
-            - [安装一个应用（install）](#安装一个应用install)
-            - [卸载一个应用（uninstall）](#卸载一个应用uninstall)
-            - [启动模拟器里的应用（launch）](#启动模拟器里的应用launch)
-            - [关闭模拟器里的应用（close）](#关闭模拟器里的应用close)
-            - [\* 判断应用是否存在（exists）](#-判断应用是否存在exists)
-            - [\* 判断应用是否不存在（doesntExists）](#-判断应用是否不存在doesntexists)
-            - [获取已经安装的应用列表（get\_installed）](#获取已经安装的应用列表get_installed)
-            - [\* 获取应用状态（state）](#-获取应用状态state)
-        - [核心类（core）](#核心类core)
-            - [创建模拟器（create）](#创建模拟器create)
-            - [克隆模拟器（clone）](#克隆模拟器clone)
-            - [删除模拟器（delete）](#删除模拟器delete)
-            - [重命名模拟器（rename）](#重命名模拟器rename)
-            - [备份模拟器（export）](#备份模拟器export)
-            - [导入模拟器（import\_）](#导入模拟器import_)
-            - [限制CPU使用率（limit\_cpu）](#限制cpu使用率limit_cpu)
-        - [安卓事件类（androidEvent）](#安卓事件类androidevent)
-            - [屏幕旋转（rotate）](#屏幕旋转rotate)
-            - [返回主页（go\_home）](#返回主页go_home)
-            - [返回（back）](#返回back)
-            - [窗口置顶（top\_most）](#窗口置顶top_most)
-            - [窗口全屏（fullscreen）](#窗口全屏fullscreen)
-            - [摇一摇（shake）](#摇一摇shake)
-            - [截图（screenshot）](#截图screenshot)
-            - [音量增加（volume\_up）](#音量增加volume_up)
-            - [音量减少（volume\_down）](#音量减少volume_down)
-            - [音量静音（volume\_mute）](#音量静音volume_mute)
-            - [任务键（go\_task）](#任务键go_task)
-            - [修改虚拟定位（location）](#修改虚拟定位location)
-            - [修改重力感应（gyro）](#修改重力感应gyro)
-        - [快捷方式类（shortcut）](#快捷方式类shortcut)
-            - [创建桌面快捷方式（create）](#创建桌面快捷方式create)
-            - [删除桌面快捷方式（delete）](#删除桌面快捷方式delete)
-        - [机型类（simulation）](#机型类simulation)
-            - [修改MAC地址（mac\_address）](#修改mac地址mac_address)
-            - [修改IMEI（imei）](#修改imeiimei)
-            - [修改IMSI（imsi）](#修改imsiimsi)
-            - [修改Android ID（android\_id）](#修改android-idandroid_id)
-            - [设置模拟器设备型号（model）](#设置模拟器设备型号model)
-            - [设置模拟器主板品牌（brand）](#设置模拟器主板品牌brand)
-            - [设置模拟器硬件制造商（solution）](#设置模拟器硬件制造商solution)
-            - [设置模拟器手机号码（phone\_number）](#设置模拟器手机号码phone_number)
-            - [设置模拟器GPU型号（gpu\_model）](#设置模拟器gpu型号gpu_model)
-        - [配置类（setting）](#配置类setting)
-            - [获取模拟器配置所有配置项（all）](#获取模拟器配置所有配置项all)
-            - [获取一个或多个配置项（get）](#获取一个或多个配置项get)
-            - [修改一个或多个配置（set）](#修改一个或多个配置set)
-            - [根据JSON文件内容修改配置（set\_by\_json）](#根据json文件内容修改配置set_by_json)
-            - [\*判断某个配置是否等于某个值（equal）](#判断某个配置是否等于某个值equal)
-            - [\*判断某个配置是否不等于某个值（not\_equal）](#判断某个配置是否不等于某个值not_equal)
-            - [\*判断某个配置等于某个值时，修改为另一个值（equal\_then\_set）](#判断某个配置等于某个值时修改为另一个值equal_then_set)
-            - [\*判断某个配置不等于某个值时，修改为另一个值（not\_equal\_then\_set）](#判断某个配置不等于某个值时修改为另一个值not_equal_then_set)
-        - [\*屏幕类（screen）](#屏幕类screen)
-            - [调整模拟器分辨率（resolution）](#调整模拟器分辨率resolution)
-            - [设置为手机分辨率（resolution\_mobile）](#设置为手机分辨率resolution_mobile)
-            - [设置为平板分辨率（resolution\_tablet）](#设置为平板分辨率resolution_tablet)
-            - [设置为超宽屏分辨率（resolution\_ultrawide）](#设置为超宽屏分辨率resolution_ultrawide)
-            - [调整模拟器DPI（dpi）](#调整模拟器dpidpi)
-            - [调整模拟器亮度（brightness）](#调整模拟器亮度brightness)
-            - [调整模拟器最大帧率（max\_frame\_rate）](#调整模拟器最大帧率max_frame_rate)
-            - [设置动态调整帧率（dynamic\_adjust\_frame\_rate）](#设置动态调整帧率dynamic_adjust_frame_rate)
-            - [设置垂直同步（vertical\_sync）](#设置垂直同步vertical_sync)
-            - [显示帧率（show\_frame\_rate）](#显示帧率show_frame_rate)
-            - [设置窗口自动旋转（window\_auto\_rotate）](#设置窗口自动旋转window_auto_rotate)
-        - [性能类（performance）](#性能类performance)
-            - [设置CPU和内存（set）](#设置cpu和内存set)
-            - [设置CPU个数（cpu）](#设置cpu个数cpu)
-            - [设置内存大小（memory）](#设置内存大小memory)
-            - [设置强制使用独立显卡（force\_discrete\_graphics）](#设置强制使用独立显卡force_discrete_graphics)
-            - [显存使用策略（renderer\_strategy）](#显存使用策略renderer_strategy)
-            - [设置磁盘类型（disk\_readonly）](#设置磁盘类型disk_readonly)
-        - [\*网络类（network）](#网络类network)
-            - [获取所有可被桥接的网卡（get\_bridge\_card）](#获取所有可被桥接的网卡get_bridge_card)
-            - [设置网络桥接模式（bridge）](#设置网络桥接模式bridge)
-            - [设置网络为NAT模式（nat）](#设置网络为nat模式nat)
-            - [设置桥接模式IP设置方式为DHCP（bridge\_dhcp）](#设置桥接模式ip设置方式为dhcpbridge_dhcp)
-            - [设置桥接模式IP设置方式为静态（bridge\_static）](#设置桥接模式ip设置方式为静态bridge_static)
-        - [ADB类（adb）](#adb类adb)
-            - [获取模拟器的ADB连接信息（get\_connect\_info）](#获取模拟器的adb连接信息get_connect_info)
-            - [点击屏幕（click）](#点击屏幕click)
-            - [滑动屏幕（swipe）](#滑动屏幕swipe)
-            - [文本输入（input\_text）](#文本输入input_text)
-            - [模拟按键（key\_event）](#模拟按键key_event)
-            - [上传文件（push）](#上传文件push)
-            - [上传文件到Download目录（push\_download）](#上传文件到download目录push_download)
-            - [下载文件（pull）](#下载文件pull)
-            - [清理应用数据（clear)](#清理应用数据clear)
-        - [GUI自动化类（auto）](#gui自动化类auto)
-            - [处理模拟器实时帧（create\_handle）](#处理模拟器实时帧create_handle)
-            - [保存模拟器实时帧（save）](#保存模拟器实时帧save)
-            - [在帧中查找第一个图片（locateOnScreen）](#在帧中查找第一个图片locateonscreen)
-            - [在帧中查找第一张图片的中心点（locateCenterOnScreen）](#在帧中查找第一张图片的中心点locatecenteronscreen)
-            - [在帧中查找所有图片（locateAllOnScreen）](#在帧中查找所有图片locateallonscreen)
-            - [获取Box的中心点（center）](#获取box的中心点center)
-            - [实战举例](#实战举例)
-    - [支持本项目](#支持本项目)
+- [MuMu Emulator Python API](#mumu-emulator-python-api)
+    - [Project Overview](#project-overview)
+    - [How to Use](#how-to-use)
+        - [Setting the MuMuManager Path](#setting-the-mumumanager-path)
+        - [Emulator Index Explained](#emulator-index-explained)
+        - [Selecting an Emulator](#selecting-an-emulator)
+        - [An Example](#an-example)
+        - [Note](#note)
+    - [API Classes](#api-classes)
+        - [Driver class (driver)](#driver-class-driver)
+            - [Network bridge driver (bridge)](#network-bridge-driver-bridge)
+                - [Install the bridge driver (install)](#install-the-bridge-driver-install)
+                - [Uninstall the bridge driver (uninstall)](#uninstall-the-bridge-driver-uninstall)
+        - [Permission class (permission)](#permission-class-permission)
+            - [\* ROOT permission (root)](#-root-permission-root)
+                - [Enable ROOT permission (enable)](#enable-root-permission-enable)
+                - [Disable ROOT permission (disable)](#disable-root-permission-disable)
+        - [Power class (power)](#power-class-power)
+            - [Start the emulator (start)](#start-the-emulator-start)
+            - [Shut down the emulator (shutdown|stop)](#shut-down-the-emulator-shutdownstop)
+            - [Restart the emulator (restart|reboot)](#restart-the-emulator-restartreboot)
+        - [Window class (window)](#window-class-window)
+            - [Show window (show)](#show-window-show)
+            - [Hide window (hidden)](#hide-window-hidden)
+            - [Adjust window size or position (layout)](#adjust-window-size-or-position-layout)
+        - [App class (app)](#app-class-app)
+            - [Install an app (install)](#install-an-app-install)
+            - [Uninstall an app (uninstall)](#uninstall-an-app-uninstall)
+            - [Launch an app inside the emulator (launch)](#launch-an-app-inside-the-emulator-launch)
+            - [Close an app inside the emulator (close)](#close-an-app-inside-the-emulator-close)
+            - [\* Check whether an app exists (exists)](#-check-whether-an-app-exists-exists)
+            - [\* Check whether an app does not exist (doesntExists)](#-check-whether-an-app-does-not-exist-doesntexists)
+            - [Get the list of installed apps (get\_installed)](#get-the-list-of-installed-apps-get_installed)
+            - [\* Get app state (state)](#-get-app-state-state)
+        - [Core class (core)](#core-class-core)
+            - [Create an emulator (create)](#create-an-emulator-create)
+            - [Clone an emulator (clone)](#clone-an-emulator-clone)
+            - [Delete an emulator (delete)](#delete-an-emulator-delete)
+            - [Rename an emulator (rename)](#rename-an-emulator-rename)
+            - [Back up an emulator (export)](#back-up-an-emulator-export)
+            - [Import an emulator (import\_)](#import-an-emulator-import_)
+            - [Limit CPU usage (limit\_cpu)](#limit-cpu-usage-limit_cpu)
+        - [Android event class (androidEvent)](#android-event-class-androidevent)
+            - [Rotate screen (rotate)](#rotate-screen-rotate)
+            - [Go to home screen (go\_home)](#go-to-home-screen-go_home)
+            - [Back (back)](#back-back)
+            - [Pin window on top (top\_most)](#pin-window-on-top-top_most)
+            - [Fullscreen window (fullscreen)](#fullscreen-window-fullscreen)
+            - [Shake (shake)](#shake-shake)
+            - [Screenshot (screenshot)](#screenshot-screenshot)
+            - [Volume up (volume\_up)](#volume-up-volume_up)
+            - [Volume down (volume\_down)](#volume-down-volume_down)
+            - [Volume mute (volume\_mute)](#volume-mute-volume_mute)
+            - [Task key (go\_task)](#task-key-go_task)
+            - [Set virtual location (location)](#set-virtual-location-location)
+            - [Set gyro sensor (gyro)](#set-gyro-sensor-gyro)
+        - [Shortcut class (shortcut)](#shortcut-class-shortcut)
+            - [Create a desktop shortcut (create)](#create-a-desktop-shortcut-create)
+            - [Delete a desktop shortcut (delete)](#delete-a-desktop-shortcut-delete)
+        - [Simulation class (simulation)](#simulation-class-simulation)
+            - [Set MAC address (mac\_address)](#set-mac-address-mac_address)
+            - [Set IMEI (imei)](#set-imei-imei)
+            - [Set IMSI (imsi)](#set-imsi-imsi)
+            - [Set Android ID (android\_id)](#set-android-id-android_id)
+            - [Set device model (model)](#set-device-model-model)
+            - [Set motherboard brand (brand)](#set-motherboard-brand-brand)
+            - [Set hardware manufacturer (solution)](#set-hardware-manufacturer-solution)
+            - [Set phone number (phone\_number)](#set-phone-number-phone_number)
+            - [Set GPU model (gpu\_model)](#set-gpu-model-gpu_model)
+        - [Setting class (setting)](#setting-class-setting)
+            - [Get all configuration items (all)](#get-all-configuration-items-all)
+            - [Get one or more configuration items (get)](#get-one-or-more-configuration-items-get)
+            - [Set one or more configuration items (set)](#set-one-or-more-configuration-items-set)
+            - [Set configuration from a JSON file (set\_by\_json)](#set-configuration-from-a-json-file-set_by_json)
+            - [\* Check whether a config equals a value (equal)](#-check-whether-a-config-equals-a-value-equal)
+            - [\* Check whether a config does not equal a value (not\_equal)](#-check-whether-a-config-does-not-equal-a-value-not_equal)
+            - [\* If a config equals a value, change it to another value (equal\_then\_set)](#-if-a-config-equals-a-value-change-it-to-another-value-equal_then_set)
+            - [\* If a config does not equal a value, change it to another value (not\_equal\_then\_set)](#-if-a-config-does-not-equal-a-value-change-it-to-another-value-not_equal_then_set)
+        - [\* Screen class (screen)](#-screen-class-screen)
+            - [Set emulator resolution (resolution)](#set-emulator-resolution-resolution)
+            - [Set to phone resolution (resolution\_mobile)](#set-to-phone-resolution-resolution_mobile)
+            - [Set to tablet resolution (resolution\_tablet)](#set-to-tablet-resolution-resolution_tablet)
+            - [Set to ultrawide resolution (resolution\_ultrawide)](#set-to-ultrawide-resolution-resolution_ultrawide)
+            - [Set emulator DPI (dpi)](#set-emulator-dpi-dpi)
+            - [Set emulator brightness (brightness)](#set-emulator-brightness-brightness)
+            - [Set max frame rate (max\_frame\_rate)](#set-max-frame-rate-max_frame_rate)
+            - [Set dynamic frame rate adjustment (dynamic\_adjust\_frame\_rate)](#set-dynamic-frame-rate-adjustment-dynamic_adjust_frame_rate)
+            - [Set vertical sync (vertical\_sync)](#set-vertical-sync-vertical_sync)
+            - [Show frame rate (show\_frame\_rate)](#show-frame-rate-show_frame_rate)
+            - [Auto-rotate window (window\_auto\_rotate)](#auto-rotate-window-window_auto_rotate)
+        - [Performance class (performance)](#performance-class-performance)
+            - [Set CPU and memory (set)](#set-cpu-and-memory-set)
+            - [Set CPU count (cpu)](#set-cpu-count-cpu)
+            - [Set memory size (memory)](#set-memory-size-memory)
+            - [Force discrete graphics (force\_discrete\_graphics)](#force-discrete-graphics-force_discrete_graphics)
+            - [VRAM usage strategy (renderer\_strategy)](#vram-usage-strategy-renderer_strategy)
+            - [Set disk type (disk\_readonly)](#set-disk-type-disk_readonly)
+        - [\* Network class (network)](#-network-class-network)
+            - [List all bridgeable network cards (get\_bridge\_card)](#list-all-bridgeable-network-cards-get_bridge_card)
+            - [Set network bridge mode (bridge)](#set-network-bridge-mode-bridge)
+            - [Set network to NAT mode (nat)](#set-network-to-nat-mode-nat)
+            - [Set bridge IP mode to DHCP (bridge\_dhcp)](#set-bridge-ip-mode-to-dhcp-bridge_dhcp)
+            - [Set bridge IP mode to static (bridge\_static)](#set-bridge-ip-mode-to-static-bridge_static)
+        - [ADB class (adb)](#adb-class-adb)
+            - [Get the emulator's ADB connection info (get\_connect\_info)](#get-the-emulators-adb-connection-info-get_connect_info)
+            - [Tap screen (click)](#tap-screen-click)
+            - [Swipe screen (swipe)](#swipe-screen-swipe)
+            - [Input text (input\_text)](#input-text-input_text)
+            - [Simulate key event (key\_event)](#simulate-key-event-key_event)
+            - [Push file (push)](#push-file-push)
+            - [Push file to Download directory (push\_download)](#push-file-to-download-directory-push_download)
+            - [Pull file (pull)](#pull-file-pull)
+            - [Clear app data (clear)](#clear-app-data-clear)
+        - [GUI automation class (auto)](#gui-automation-class-auto)
+            - [Process emulator live frames (create\_handle)](#process-emulator-live-frames-create_handle)
+            - [Save emulator live frame (save)](#save-emulator-live-frame-save)
+            - [Find the first image in a frame (locateOnScreen)](#find-the-first-image-in-a-frame-locateonscreen)
+            - [Find the center of the first image in a frame (locateCenterOnScreen)](#find-the-center-of-the-first-image-in-a-frame-locatecenteronscreen)
+            - [Find all images in a frame (locateAllOnScreen)](#find-all-images-in-a-frame-locateallonscreen)
+            - [Get the center of a Box (center)](#get-the-center-of-a-box-center)
+            - [Practical example](#practical-example)
+    - [Supporting This Project](#supporting-this-project)
 
-## 项目介绍
+## Project Overview
 
-该项目是基于MuMu提供的``MuMuManager.exe``实现的Python API，可以通过Python代码控制MuMu模拟器的大量操作。
+This project is a Python API built on top of MuMu's ``MuMuManager.exe``. It lets you control most operations of the MuMu emulator from Python.
 
-该项目要求你已经安装了MuMu模拟器，且Mumu模拟器版本`>=4.0.0`以上。
+The project requires that you already have MuMu Emulator installed, with version `>=4.0.0`.
 
-### 近期更新（1.1.0）
+### Recent updates (1.1.0)
 
-- 修复了 ADB 点击/输入命令在 MuMu 上的 shell 调用兼容性问题。
-- 修复了并发场景下 `select` 状态互串问题，`Mumu` 实例索引上下文已线程隔离。
-- `auto.create_handle` 新增 `backend` 和 `fps` 参数，默认 `backend='auto'`。
-- `backend='auto'` 会优先使用 MuMu 官方高性能截图 SDK（`mumu_sdk`），失败时自动回退到 `scrcpy`。
+- Fixed shell-invocation compatibility for ADB tap/input commands on MuMu.
+- Fixed cross-talk of `select` state under concurrency; the index context of a `Mumu` instance is now thread-isolated.
+- `auto.create_handle` now accepts `backend` and `fps` parameters; default is `backend='auto'`.
+- `backend='auto'` prefers the official MuMu high-performance screenshot SDK (`mumu_sdk`) and automatically falls back to `scrcpy` if it is unavailable.
 
-## 如何使用？
+## How to Use
 
-将本项目安装到您的Python环境中
+Install this project into your Python environment.
 
 ```powershell
 pip install mumu-python-api-wlkjyy
 ```
 
-如需 GUI 自动化相关依赖（OpenCV + scrcpy）：
+If you need the GUI automation extras (OpenCV + scrcpy):
 
 ```powershell
 pip install "mumu-python-api-wlkjyy[auto]"
 ```
 
-导入模块
+Import the module.
 
 ```python
 from mumu.mumu import Mumu
 ```
 
-### 设置MuMuManager路径
+### Setting the MuMuManager Path
 
-如果你的Mumu模拟器不是使用``默认路径``安装，则需要在创建Mumu对象时传入MuMuManager的路径。
-默认路径``C:\Program Files\Netease\MuMu Player 12\shell\MuMuManager.exe``
+If your MuMu emulator is not installed at the ``default path``, you need to pass the path of MuMuManager when creating the Mumu object.
+The default path is ``C:\Program Files\Netease\MuMu Player 12\shell\MuMuManager.exe``.
 
 ```python
 from mumu.mumu import Mumu
@@ -169,13 +169,13 @@ from mumu.mumu import Mumu
 Mumu(r'your_path').select(1)
 ```
 
-### 模拟器索引说明
+### Emulator Index Explained
 
-在Mumu模拟器种，操作模拟器通过索引，索引可以在创建时指定，也可以创建时自动分配，如果你不知道你的模拟器索引是多少，可以打开“Mumu多开器”，找到你的模拟器，最前面那个数字就是你的模拟器索引。
+In the MuMu emulator, operations target an emulator by its index. The index can be specified at creation time or assigned automatically. If you don't know the index of your emulator, open the "MuMu Multi-Instance Manager", find your emulator, and the leading number is the index.
 
-### 选择模拟器
+### Selecting an Emulator
 
-如果指定的操作需要操作模拟器，可以通过``select``方法选择模拟器
+If an operation needs to act on an emulator, use the ``select`` method to choose one.
 
 ```python
 from mumu.mumu import Mumu
@@ -183,114 +183,114 @@ from mumu.mumu import Mumu
 mumu = Mumu().select(1)
 ```
 
-对于选择多个模拟器时可以这样，一下4种方式都是等价的，均可以选择1、2、3号模拟器
+To select multiple emulators, the following four forms are equivalent and all select emulators 1, 2, and 3.
 
 ```python
 from mumu.mumu import Mumu
 
-# 第一种
+# Form 1
 mumu = Mumu().select([1, 2, 3])
-# 第二种
+# Form 2
 mumu = Mumu().select(1, 2, 3)
-# 第三种
+# Form 3
 mumu = Mumu().select((1, 2, 3))
-# 也可以混合使用
+# Forms can also be mixed
 mumu = Mumu().select([1, 2], 3)
 ```
 
-如果希望选择所有模拟器，可以使用以下两种方法
+To select all emulators, use either of the following.
 
 ```python
 from mumu.mumu import Mumu
 
-# 第一种
-mumu = Mumu().select()  # 当select什么都不传时，默认选择所有模拟器
-# 第二种：通过all方法选择所有模拟器
+# Form 1
+mumu = Mumu().select()  # Calling select with no arguments selects all emulators
+# Form 2: select all emulators via the all method
 mumu = Mumu().all()
 ```
 
-### 举个例子
+### An Example
 
-我希望开启索引为1的模拟器的root权限，然后启动它。
+Suppose I want to enable root on emulator 1 and then launch it.
 
 ```python
 from mumu.mumu import Mumu
 
-# 选择索引为1的模拟器
+# Select emulator with index 1
 mumu = Mumu().select(1)
-# 开启Root权限
+# Enable root permission
 mumu.permission.root.enable()
-# 启动模拟器
+# Launch the emulator
 mumu.power.start()
 ```
 
-### 注意
+### Note
 
-带`*`的类是本项目提供的`超类`，并不是MuMu模拟器的API原生提供。
+Classes marked with `*` are `super-classes` provided by this project; they are not part of the native MuMu API.
 
-多线程场景建议在每个线程里单独执行一次`select(...)`后再调用 API，避免跨线程共享未选择索引的对象。
+In multi-threaded scenarios, it is recommended to call `select(...)` once per thread before invoking the API, to avoid sharing an unselected-index object across threads.
 
-## API类
+## API Classes
 
-本项目提供了多个操作类，可以通过这些类实现对模拟器的控制。
+This project provides a number of operation classes that you can use to control the emulator.
 
-### 驱动类（driver）
+### Driver class (driver)
 
-说明：具官方文档，目前仅支持网络桥接驱动。
+Note: Per the official documentation, only the network bridge driver is currently supported.
 
-#### 网络桥接驱动（bride）
+#### Network bridge driver (bridge)
 
-##### 安装桥接驱动（install）
+##### Install the bridge driver (install)
 
-说明：安装桥接驱动需要管理员权限
+Note: installing the bridge driver requires administrator privileges.
 
 ```python
 Mumu().driver.bridge.install()
 ```
 
-##### 卸载桥接驱动（uninstall）
+##### Uninstall the bridge driver (uninstall)
 
-说明：卸载桥接驱动需要管理员权限
+Note: uninstalling the bridge driver requires administrator privileges.
 
 ```python
 Mumu().driver.bridge.uninstall()
 ```
 
-### 权限类（permission）
+### Permission class (permission)
 
-####                * ROOT权限（root）
+####                * ROOT permission (root)
 
-##### 开启ROOT权限（enable）
+##### Enable ROOT permission (enable)
 
-说明：开启ROOT权限需要在模拟器关机状态下进行
+Note: enabling ROOT must be done while the emulator is shut down.
 
 ```python
 Mumu().select('your_index').permission.root.enable()
 ```
 
-##### 关闭ROOT权限（disable）
+##### Disable ROOT permission (disable)
 
-说明：关闭ROOT权限需要在模拟器关机状态下进行
+Note: disabling ROOT must be done while the emulator is shut down.
 
 ```python
 Mumu().select('your_index').permission.root.disable()
 ```
 
-### 电源类（power）
+### Power class (power)
 
-#### 启动模拟器（start）
+#### Start the emulator (start)
 
 ```python
 Mumu().select('your_index').power.start()
 ```
 
-启动完成后打开指定包名的应用
+Launch the specified app once the emulator finishes starting.
 
 ```python
 Mumu().select('your_index').power.start('com.tencent.mobileqq')
 ```
 
-#### 关闭模拟器（shutdown|stop）
+#### Shut down the emulator (shutdown|stop)
 
 ```python
 Mumu().select('your_index').power.shutdown()
@@ -298,7 +298,7 @@ Mumu().select('your_index').power.shutdown()
 Mumu().select('your_index').power.stop()
 ```
 
-#### 重启模拟器（restart|reboot）
+#### Restart the emulator (restart|reboot)
 
 ```python
 Mumu().select('your_index').power.restart()
@@ -306,35 +306,35 @@ Mumu().select('your_index').power.restart()
 Mumu().select('your_index').power.reboot()
 ```
 
-### 窗口类（window）
+### Window class (window)
 
-#### 显示窗口（show）
+#### Show window (show)
 
 ```python
 Mumu().select('your_index').window.show()
 ```
 
-#### 隐藏窗口（hidden）
+#### Hide window (hidden)
 
 ```python
 Mumu().select('your_index').window.hidden()
 ```
 
-#### 调整窗口大小或位置（layout）
+#### Adjust window size or position (layout)
 
-该方法可以接受4个参数，分别是x坐标、y坐标、宽度、高度
+This method accepts 4 arguments: x coordinate, y coordinate, width, and height.
 
 ```python
 Mumu().select('your_index').window.layout(0, 0, 800, 600)
 ```
 
-如果只希望调整窗口的大小
+To adjust only the window size:
 
 ```python
 Mumu().select('your_index').window.layout(None, None, 1080, 1920)
 ```
 
-也可以只调整一个参数
+You can also adjust a single argument.
 
 ```python
 Mumu().select('your_index').window.layout(300, None, None, None)
@@ -342,674 +342,674 @@ Mumu().select('your_index').window.layout(300, None, None, None)
 Mumu().select('your_index').window.layout(None, None, 1080, None)
 ```
 
-### 应用类（app）
+### App class (app)
 
-#### 安装一个应用（install）
+#### Install an app (install)
 
-该方法接受一个参数，即apk文件的路径，当apk路径无法访问时，会抛出``FileNotFoundError``异常
+This method accepts one argument, the path to an APK file. If the APK path is unreachable, ``FileNotFoundError`` is raised.
 
 ```python
 Mumu().select('your_index').app.install(r'C:\test.apk')
 ```
 
-#### 卸载一个应用（uninstall）
+#### Uninstall an app (uninstall)
 
-该方法接受一个参数，即应用的包名
+This method accepts one argument: the app's package name.
 
 ```python
 Mumu().select('your_index').app.uninstall('com.miHoYo.Yuanshen')
 ```
 
-#### 启动模拟器里的应用（launch）
+#### Launch an app inside the emulator (launch)
 
-该方法接受一个参数，即应用的包名
+This method accepts one argument: the app's package name.
 
 ```python
-# 启动原神
+# Launch Genshin Impact
 Mumu().select('your_index').app.launch('com.miHoYo.Yuanshen')
 ```
 
-#### 关闭模拟器里的应用（close）
+#### Close an app inside the emulator (close)
 
-该方法接受一个参数，即应用的包名
+This method accepts one argument: the app's package name.
 
 ```python
-# 关闭原神
+# Close Genshin Impact
 Mumu().select('your_index').app.close('com.miHoYo.Yuanshen')
 ```
 
-####                * 判断应用是否存在（exists）
+####                * Check whether an app exists (exists)
 
-该方法接受一个参数，即应用的包名
+This method accepts one argument: the app's package name.
 
 ```python
-# 判断原神是否存在
+# Check whether Genshin Impact is installed
 if (Mumu().select('your_index').app.exists('com.miHoYo.Yuanshen')):
-    print('原神已安装')
+    print('Genshin Impact is installed')
 else:
-    print('原神未安装')
+    print('Genshin Impact is not installed')
 ```
 
-####                * 判断应用是否不存在（doesntExists）
+####                * Check whether an app does not exist (doesntExists)
 
-该方法接受一个参数，即应用的包名
+This method accepts one argument: the app's package name.
 
 ```python
-# 判断原神是否不存在
+# Check whether Genshin Impact is not installed
 if (Mumu().select('your_index').app.doesntExists('com.miHoYo.Yuanshen')):
-    print('原神未安装')
+    print('Genshin Impact is not installed')
 else:
-    print('原神已安装')
+    print('Genshin Impact is installed')
 ```
 
-#### 获取已经安装的应用列表（get_installed）
+#### Get the list of installed apps (get_installed)
 
 ```python
-# 获取已经安装的应用列表
+# Get the list of installed apps
 Mumu().select(1).app.get_installed()
 ```
 
-返回一个列表，当没有安装任何应用时，返回一个空列表
+Returns a list. When no apps are installed, returns an empty list.
 
 ```python
 [
     {
-        'package': 'com.miHoYo.Yuanshen',  # 包名
-        'app_name': '原神',  # 应用名称
-        'version': '4.1.8'  # 版本号
+        'package': 'com.miHoYo.Yuanshen',  # package name
+        'app_name': 'Genshin Impact',  # app name
+        'version': '4.1.8'  # version
     },
 ]
 ```
 
-####                * 获取应用状态（state）
+####                * Get app state (state)
 
-该方法接受一个参数，即应用的包名，返回一个字符串，`running`表示应用正在运行，`stopped`表示应用未运行，`not_installed`表示应用未安装
+This method accepts one argument (the app's package name) and returns a string: `running` means the app is running, `stopped` means the app is not running, and `not_installed` means the app is not installed.
 
 ```python
-# 获取原神的状态
+# Get Genshin Impact's state
 Mumu().select('your_index').app.state('com.miHoYo.Yuanshen')
 ```
 
-### 核心类（core）
+### Core class (core)
 
-#### 创建模拟器（create）
+#### Create an emulator (create)
 
-该方法接受一个参数，即模拟器的名称，返回一个list包含所创建的模拟器索引
+This method accepts one argument (the number of emulators to create) and returns a list of the indices of the created emulators.
 
-举例：创建一个模拟器
+Example: create one emulator.
 
 ```python
 Mumu().core.create()
 ```
 
-举例：创建5个模拟器
+Example: create 5 emulators.
 
 ```python
 Mumu().core.create(5)
 ```
 
-举例：创建一个索引为``10``的模拟器
+Example: create an emulator with index ``10``.
 
 ```python
 Mumu().select(10).core.create()
 ```
 
-从索引3开始创建5个模拟器
+Create 5 emulators starting from index 3.
 
 ```python
 Mumu().select(3).core.create(5)
 ```
 
-从索引 3,20 开始，分别创建10次模拟器，索引依次递增(即创建3-12,20-29索引的模拟器)
+Starting from indices 3 and 20, create 10 emulators each, with indices increasing sequentially (i.e. emulators with indices 3-12 and 20-29).
 
 ```python
 Mumu().select(3, 20).core.create(10)
 ```
 
-#### 克隆模拟器（clone）
+#### Clone an emulator (clone)
 
-该方法接受一个参数，即为克隆的数量，但是调用该方法前需要先选择一个模拟器，返回一个list包含所创建的模拟器索引
+This method accepts one argument (the number of clones). An emulator must be selected before calling this method. It returns a list of the indices of the created emulators.
 
-举例：克隆索引为2的模拟器
+Example: clone the emulator with index 2.
 
 ```python
 Mumu().select(2).core.clone()
 ```
 
-举例：复制索引为 2,4,6 的模拟器
+Example: clone the emulators with indices 2, 4, and 6.
 
 ```python
 Mumu().select(2, 4, 6).core.clone()
 ```
 
-举例：复制索引为2的模拟器，复制10次
+Example: clone the emulator with index 2 ten times.
 
 ```python
 Mumu().select(2).core.clone(10)
 ```
 
-举例：复制所有模拟器
+Example: clone all emulators.
 
 ```python
 Mumu().all().core.clone()
 ```
 
-#### 删除模拟器（delete）
+#### Delete an emulator (delete)
 
-该方法不需要传入参数，但是调用该方法前需要先选择一个模拟器，返回bool值，表示是否删除成功
+This method takes no arguments. An emulator must be selected before calling it. It returns a bool indicating whether the deletion succeeded.
 
-举例：删除索引为2的模拟器
+Example: delete the emulator with index 2.
 
 ```python
 if Mumu().select(2).core.delete():
-    print('删除成功')
+    print('Deleted successfully')
 ```
 
-举例：删除索引为2,4,6的模拟器
+Example: delete the emulators with indices 2, 4, and 6.
 
 ```python
 Mumu().select(2, 4, 6).core.delete()
 ```
 
-举例：删除所有模拟器（危险操作）
+Example: delete all emulators (dangerous).
 
 ```python
 Mumu().all().core.delete()
 ```
 
-#### 重命名模拟器（rename）
+#### Rename an emulator (rename)
 
-该方法接受一个参数，即为新的模拟器名称，但是调用该方法前需要先选择一个模拟器，返回bool值，表示是否重命名成功。
+This method accepts one argument (the new emulator name). An emulator must be selected before calling it. It returns a bool indicating whether the rename succeeded.
 
-举例：重命名索引为2的模拟器为“测试”
-
-```python
-if Mumu().select(2).core.rename('测试'):
-    print('重命名成功')
-```
-
-举例：重命名索引为2,4,6的模拟器为“测试”
+Example: rename the emulator with index 2 to "test".
 
 ```python
-Mumu().select(2, 4, 6).core.rename('测试')
+if Mumu().select(2).core.rename('test'):
+    print('Renamed successfully')
 ```
 
-举例：重命名所有的模拟器为“测试”
+Example: rename the emulators with indices 2, 4, and 6 to "test".
 
 ```python
-Mumu().all().core.rename('测试')
+Mumu().select(2, 4, 6).core.rename('test')
 ```
 
-#### 备份模拟器（export）
+Example: rename all emulators to "test".
 
-该方法接受三个参数，调用该方法前需要先选择一个模拟器，返回bool值，表示是否备份成功。
+```python
+Mumu().all().core.rename('test')
+```
 
-| 参数   | 说明        |
-|------|-----------|
-| dir  | 备份的路径     |
-| name | 备份的名称     |
-| zip  | 是否使用zip压缩 |
+#### Back up an emulator (export)
 
-举例：备份索引为2的模拟器到C盘目录 backup 下，名称为 test.mumudata，以非压缩的格式
+This method accepts three arguments. An emulator must be selected before calling it. It returns a bool indicating whether the backup succeeded.
+
+| Parameter | Description           |
+|-----------|-----------------------|
+| dir       | Backup directory      |
+| name      | Backup name           |
+| zip       | Use zip compression   |
+
+Example: back up the emulator with index 2 to the C: drive's `backup` directory with the name `test.mumudata`, uncompressed.
 
 ```python
 if Mumu().select(2).core.export(r'C:\backup', 'test'):
-    print('备份成功')
+    print('Backup successful')
 ```
 
-举例：备份索引为2,4,6的模拟器到C盘目录 backup 下，文件名基于 test 自动加后缀，以非压缩的格式
+Example: back up the emulators with indices 2, 4, and 6 to the C: drive's `backup` directory; the file names are derived from `test` with auto-appended suffixes, uncompressed.
 
 ```python
 Mumu().select(2, 4, 6).core.export(r'C:\backup', 'test')
 ```
 
-举例：备份所有的模拟器到C盘目录 backup 下，文件名基于 test 自动加后缀，以压缩的格式
+Example: back up all emulators to the C: drive's `backup` directory; the file names are derived from `test` with auto-appended suffixes, compressed.
 
 ```python
 Mumu().all().core.export(r'C:\backup', 'test', True)
 ```
 
-#### 导入模拟器（import_）
+#### Import an emulator (import_)
 
-该方法接受一个参数，即为备份文件的路径，如果传入一个列表，则表示导入多个，调用该方法前需要先选择一个模拟器，返回bool值，表示是否导入成功。
+This method accepts one argument: the path to a backup file. If a list is passed, multiple files are imported. An emulator must be selected before calling it. It returns a bool indicating whether the import succeeded.
 
-举例：导入C盘下的 test.mumudata 并创建模拟器
+Example: import `test.mumudata` from the C: drive to create an emulator.
 
 ```python
 if Mumu().select(2).core.import_(r'C:\test.mumudata'):
-    print('导入成功')
+    print('Imported successfully')
 ```
 
-举例：导入C盘下的 test.mumudata 并创建模拟器，导入10次
+Example: import `test.mumudata` from the C: drive to create emulators, 10 times.
 
 ```python
 Mumu().select(2).core.import_(r'C:\test.mumudata', 10)
 ```
 
-举例：导入C盘下的 test.mumudata 和D盘下的 test2.mumudata 并创建模拟器，分别导入10次
+Example: import `test.mumudata` from the C: drive and `test2.mumudata` from the D: drive to create emulators, 10 times each.
 
 ```python
 Mumu().select(2).core.import_([r'C:\test.mumudata', r'D:\test2.mumudata'], 10)
 ```
 
-#### 限制CPU使用率（limit_cpu）
+#### Limit CPU usage (limit_cpu)
 
-该方法接受一个参数，即为CPU使用率，调用该方法前需要先选择一个模拟器，返回bool值，表示是否设置成功。
+This method accepts one argument: the CPU usage limit. An emulator must be selected before calling it. It returns a bool indicating whether the operation succeeded.
 
-举例：在索引为2的模拟器中限制CPU为50%
+Example: limit the CPU of emulator 2 to 50%.
 
 ```python
 Mumu().select(2).core.limit_cpu(50)
 ```
 
-举例：在索引为2,4,6的模拟器中限制CPU为50%
+Example: limit the CPU of emulators 2, 4, and 6 to 50%.
 
 ```python
 Mumu().select(2, 4, 6).core.limit_cpu(50)
 ```
 
-举例：在所有模拟器中限制CPU为50%
+Example: limit the CPU of all emulators to 50%.
 
 ```python
 Mumu().all().core.limit_cpu(50)
 ```
 
-### 安卓事件类（androidEvent）
+### Android event class (androidEvent)
 
-该类提供了安卓事件操作，可以通过该类实现对模拟器的操作。
+This class exposes Android event operations, which you can use to drive the emulator.
 
-调用类的所有方法前需要先选择一个模拟器，返回bool值，表示是否操作成功。
-方法未特殊说明时，均无需传入参数。
+An emulator must be selected before calling any method on this class. Each method returns a bool indicating success.
+Unless otherwise noted, methods take no arguments.
 
-#### 屏幕旋转（rotate）
+#### Rotate screen (rotate)
 
 ```python
 Mumu().select(1).androidEvent.rotate()
 ```
 
-#### 返回主页（go_home）
+#### Go to home screen (go_home)
 
 ```python
 Mumu().select(1).androidEvent.go_home()
 ```
 
-#### 返回（back）
+#### Back (back)
 
 ```python
 Mumu().select(1).androidEvent.go_back()
 ```
 
-#### 窗口置顶（top_most）
+#### Pin window on top (top_most)
 
 ```python
 Mumu().select(1).androidEvent.top_most()
 ```
 
-#### 窗口全屏（fullscreen）
+#### Fullscreen window (fullscreen)
 
 ```python
 Mumu().select(1).androidEvent.fullscreen()
 ```
 
-#### 摇一摇（shake）
+#### Shake (shake)
 
 ```python
 Mumu().select(1).androidEvent.shake()
 ```
 
-#### 截图（screenshot）
+#### Screenshot (screenshot)
 
 ```python
 Mumu().select(1).androidEvent.screenshot()
 ```
 
-#### 音量增加（volume_up）
+#### Volume up (volume_up)
 
 ```python
 Mumu().select(1).androidEvent.volume_up()
 ```
 
-#### 音量减少（volume_down）
+#### Volume down (volume_down)
 
 ```python
 Mumu().select(1).androidEvent.volume_down()
 ```
 
-#### 音量静音（volume_mute）
+#### Volume mute (volume_mute)
 
 ```python
 Mumu().select(1).androidEvent.volume_mute()
 ```
 
-#### 任务键（go_task）
+#### Task key (go_task)
 
 ```python
 Mumu().select(1).androidEvent.go_task()
 ```
 
-#### 修改虚拟定位（location）
+#### Set virtual location (location)
 
-该方法接受两个参数，分别是经度和纬度
+This method accepts two arguments: longitude and latitude.
 
-举例：在索引为2的模拟器中修改虚拟定位为经度114.1，纬度-23
+Example: set the virtual location of emulator 2 to longitude 114.1, latitude -23.
 
 ```python
 Mumu().select(2).androidEvent.location(114.1, -23)
 ```
 
-举例： 在索引为2,4,6的模拟器中修改虚拟定位为经度114.1，纬度-23
+Example: set the virtual location of emulators 2, 4, and 6 to longitude 114.1, latitude -23.
 
 ```python
 Mumu().select(2, 4, 6).androidEvent.location(114.1, -23)
 ```
 
-举例：在所有模拟器中修改虚拟定位为经度114.1，纬度-23
+Example: set the virtual location of all emulators to longitude 114.1, latitude -23.
 
 ```python
 Mumu().all().androidEvent.location(114.1, -23)
 ```
 
-#### 修改重力感应（gyro）
+#### Set gyro sensor (gyro)
 
-该方法接受三个参数，分别是x轴、y轴、z轴
+This method accepts three arguments: x, y, and z axes.
 
-举例：在索引为2的模拟器中修改重力感应X=40，Y=20，Z=30
+Example: set the gyro sensor of emulator 2 to X=40, Y=20, Z=30.
 
 ```python
 Mumu().select(2).androidEvent.gyro(40, 20, 30)
 ```
 
-举例：在索引为2,4,6的模拟器中修改重力感应X=40，Y=20，Z=30
+Example: set the gyro sensor of emulators 2, 4, and 6 to X=40, Y=20, Z=30.
 
 ```python
 Mumu().select(2, 4, 6).androidEvent.gyro(40, 20, 30)
 ```
 
-举例：在所有模拟器中修改重力感应X=40，Y=20，Z=30
+Example: set the gyro sensor of all emulators to X=40, Y=20, Z=30.
 
 ```python
 Mumu().all().androidEvent.gyro(40, 20, 30)
 ```
 
-### 快捷方式类（shortcut）
+### Shortcut class (shortcut)
 
-#### 创建桌面快捷方式（create）
+#### Create a desktop shortcut (create)
 
-该方法接受三个参数，分别是快捷方式名称、快捷方式图标路径、应用包名
+This method accepts three arguments: shortcut name, shortcut icon path, and app package name.
 
-举例：在桌面创建索引为2的模拟器的快捷方式 test，图标用 C 盘的 test.ico，自动启动原神
+Example: create a desktop shortcut named `test` for emulator 2 using `C:\test.ico` as the icon, auto-launching Genshin Impact.
 
 ```python
 Mumu().select(2).shortcut.create('test', r'C:\test.ico', 'com.miHoYo.Yuanshen')
 ```
 
-举例：在桌面创建索引为2,4,6的模拟器的快捷方式 test，图标用 C 盘的 test.ico，自动启动原神
+Example: create a desktop shortcut named `test` for emulators 2, 4, and 6 using `C:\test.ico` as the icon, auto-launching Genshin Impact.
 
 ```python
 Mumu().select(2, 4, 6).shortcut.create('test', r'C:\test.ico', 'com.miHoYo.Yuanshen')
 ```
 
-举例：在所有模拟器中创建快捷方式 test，图标用 C 盘的 test.ico，自动启动原神
+Example: create a shortcut named `test` for all emulators using `C:\test.ico` as the icon, auto-launching Genshin Impact.
 
 ```python
 Mumu().all().shortcut.create('test', r'C:\test.ico', 'com.miHoYo.Yuanshen')
 ```
 
-#### 删除桌面快捷方式（delete）
+#### Delete a desktop shortcut (delete)
 
-该方法无需传入参数，调用该方法前需要先选择一个模拟器，返回bool值，表示是否删除成功。
+This method takes no arguments. An emulator must be selected before calling it. It returns a bool indicating whether the deletion succeeded.
 
-举例：删除索引为2的模拟器的快捷方式
+Example: delete the shortcut for emulator 2.
 
 ```python
 Mumu().select(2).shortcut.delete()
 ```
 
-举例：删除索引为2,4,6的模拟器的快捷方式
+Example: delete the shortcuts for emulators 2, 4, and 6.
 
 ```python
 Mumu().select(2, 4, 6).shortcut.delete()
 ```
 
-举例：删除所有模拟器的快捷方式
+Example: delete the shortcuts for all emulators.
 
 ```python
 Mumu().all().shortcut.delete()
 ```
 
-### 机型类（simulation）
+### Simulation class (simulation)
 
-该类提供了模拟器机型操作。这玩意非常的鸡肋！！
+This class exposes simulated-device operations. (These are largely cosmetic.)
 
-#### 修改MAC地址（mac_address）
+#### Set MAC address (mac_address)
 
-该方法接受一个参数，即为新的MAC地址，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+This method accepts one argument (the new MAC address). An emulator must be selected before calling it. It returns a bool indicating whether the change succeeded.
 
 ```python
 Mumu().select(1).simulation.mac_address('00:11:22:33:44:55')
 ```
 
-举例：为索引为1的模拟器随机生成一个MAC地址，两种方式均可
+Example: generate a random MAC address for emulator 1; either form works.
 
 ```python
 from mumu.constant import MacAddress
 
-# 第一种：传入一个MAC地址
+# Form 1: pass a MAC address
 Mumu().select(1).simulation.mac_address(MacAddress.random())
 
-# 第二种：当不传入参数时，表示随机生成一个MAC地址
+# Form 2: with no argument, a random MAC address is generated
 Mumu().select(1).simulation.mac_address() 
 ```
 
-#### 修改IMEI（imei）
+#### Set IMEI (imei)
 
-安卓12不允许应用获取IMEI
+Android 12 does not allow apps to read the IMEI.
 
-该方法接受一个参数，即为新的IMEI，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+This method accepts one argument (the new IMEI). An emulator must be selected before calling it. It returns a bool indicating whether the change succeeded.
 
 ```python
 Mumu().select(1).simulation.imei('123456789012345')
 ```
 
-举例：为索引为1的模拟器随机生成一个IMEI，两种方式均可
+Example: generate a random IMEI for emulator 1; either form works.
 
 ```python
 from mumu.constant import IMEI
 
-# 第一种：传入一个IMEI
+# Form 1: pass an IMEI
 Mumu().select(1).simulation.imei(IMEI.random())
 
-# 第二种：当不传入参数时，表示随机生成一个IMEI
+# Form 2: with no argument, a random IMEI is generated
 Mumu().select(1).simulation.imei() 
 ```
 
-#### 修改IMSI（imsi）
+#### Set IMSI (imsi)
 
-安卓12不允许应用获取IMSI
+Android 12 does not allow apps to read the IMSI.
 
-该方法接受一个参数，即为新的IMSI，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+This method accepts one argument (the new IMSI). An emulator must be selected before calling it. It returns a bool indicating whether the change succeeded.
 
 ```python
 Mumu().select(1).simulation.imsi('460000000000000')
 ```
 
-举例：为索引为1的模拟器随机生成一个IMSI，两种方式均可
+Example: generate a random IMSI for emulator 1; either form works.
 
 ```python
 from mumu.constant import IMSI
 
-# 第一种：传入一个IMSI
+# Form 1: pass an IMSI
 Mumu().select(1).simulation.imsi(IMSI.random())
 
-# 第二种：当不传入参数时，表示随机生成一个IMSI
+# Form 2: with no argument, a random IMSI is generated
 Mumu().select(1).simulation.imsi() 
 ```
 
-#### 修改Android ID（android_id）
+#### Set Android ID (android_id)
 
-该方法接受一个参数，即为新的Android ID，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+This method accepts one argument (the new Android ID). An emulator must be selected before calling it. It returns a bool indicating whether the change succeeded.
 
 ```python
 Mumu().select(1).simulation.android_id('1234567890123456')
 ```
 
-举例：为索引为1的模拟器随机生成一个Android ID，两种方式均可
+Example: generate a random Android ID for emulator 1; either form works.
 
 ```python
 from mumu.constant import AndroidID
 
-# 第一种：传入一个Android ID
+# Form 1: pass an Android ID
 Mumu().select(1).simulation.android_id(AndroidID.random())
 
-# 第二种：当不传入参数时，表示随机生成一个Android ID
+# Form 2: with no argument, a random Android ID is generated
 Mumu().select(1).simulation.android_id() 
 ```
 
-#### 设置模拟器设备型号（model）
+#### Set device model (model)
 
-该方法接受一个参数，即为新的设备型号，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+This method accepts one argument (the new device model). An emulator must be selected before calling it. It returns a bool indicating whether the change succeeded.
 
 ```python
 Mumu().select(1).simulation.model('MI 10')
 ```
 
-#### 设置模拟器主板品牌（brand）
+#### Set motherboard brand (brand)
 
-该方法接受一个参数，即为新的主板型号，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+This method accepts one argument (the new motherboard brand). An emulator must be selected before calling it. It returns a bool indicating whether the change succeeded.
 
 ```python
 Mumu().select(1).simulation.brand('Xiaomi')
 ```
 
-#### 设置模拟器硬件制造商（solution）
+#### Set hardware manufacturer (solution)
 
-该方法接受一个参数，即为新的硬件型号，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+This method accepts one argument (the new hardware manufacturer). An emulator must be selected before calling it. It returns a bool indicating whether the change succeeded.
 
 ```python
 Mumu().select(1).simulation.solution('qcom')
 ```
 
-#### 设置模拟器手机号码（phone_number）
+#### Set phone number (phone_number)
 
-安卓12不允许应用获取手机号码
+Android 12 does not allow apps to read the phone number.
 
-该方法接受一个参数，即为新的手机号码，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+This method accepts one argument (the new phone number). An emulator must be selected before calling it. It returns a bool indicating whether the change succeeded.
 
 ```python
 Mumu().select(1).simulation.phone_number('18888888888')
 ```
 
-举例：随机设置一个手机号码，两种方式均可
+Example: set a random phone number; either form works.
 
 ```python
 from mumu.constant import PhoneNumber
 
-# 第一种：传入一个手机号码
+# Form 1: pass a phone number
 Mumu().select(1).simulation.phone_number(PhoneNumber.random())
 
-# 第二种：当不传入参数时，表示随机生成一个手机号码
+# Form 2: with no argument, a random phone number is generated
 Mumu().select(1).simulation.phone_number() 
 ```
 
-#### 设置模拟器GPU型号（gpu_model）
+#### Set GPU model (gpu_model)
 
-该方法提供4个参数，选填一个即可。
+This method exposes 4 parameters; pass one of them.
 
-举例：设置索引为1的模拟器的GPU型号为GeForce RTX 3090
+Example: set the GPU model of emulator 1 to GeForce RTX 3090.
 
 ```python
 Mumu().select(1).simulation.gpu_model('GeForce RTX 3090')
 ```
 
-举例：设置索引为1的模拟器的GPU型号为高配
+Example: set the GPU model of emulator 1 to the high-end preset.
 
 ```python
 Mumu().select(1).simulation.gpu_model(top_model=True)
 ```
 
-举例：设置索引为1的模拟器的GPU型号为低配
+Example: set the GPU model of emulator 1 to the low-end preset.
 
 ```python
 Mumu().select(1).simulation.gpu_model(low_model=True)
 ```
 
-举例：设置索引为1的模拟器的GPU型号为中配
+Example: set the GPU model of emulator 1 to the mid-range preset.
 
 ```python
 Memu().select(1).simulation.gpu_model(middle_model=True)
 ```
 
-### 配置类（setting）
+### Setting class (setting)
 
-该类提供了模拟器配置文件操作。
+This class exposes operations on the emulator's configuration file.
 
-在配置类中，不选择任何模拟器即操作全局配置（默认值）
+In the setting class, when no emulator is selected, the operations target the global configuration (i.e. the defaults).
 
-#### 获取模拟器配置所有配置项（all）
+#### Get all configuration items (all)
 
-该方法提供一个参数`all_writable`，当传入`True`时，表示获取所有可写的配置项，当传入`False`时，表示获取所有配置项，返回一个字典，表示所有配置项的键值对。
+This method has one parameter `all_writable`. When `True`, it returns all writable configuration items; when `False`, it returns all configuration items. It returns a dict of key/value pairs.
 
-举例：获取所有配置项
+Example: get all configuration items.
 
 ```python
 Mumu().select(1).setting.all()
 ```
 
-举例：获取所有可写的配置项
+Example: get all writable configuration items.
 
 ```python
 Mumu().select(1).setting.all(True)
 ```
 
-#### 获取一个或多个配置项（get）
+#### Get one or more configuration items (get)
 
-该方法接受一个或多个参数，表示要获取的配置项，当获取单个配置项时，返回一个字符串，当获取多个配置项时，返回一个字典，表示所有配置项的键值对。
+This method accepts one or more arguments specifying the configuration items to retrieve. When fetching a single item, it returns a string; when fetching multiple items, it returns a dict of key/value pairs.
 
-举例：获取指定一个或多个配置（返回字符串）
+Example: get one configuration item (returns a string).
 
 ```python
 value = Mumu().select(1).setting.get('window_size_fixed')
 ```
 
-举例：获取多个配置项（返回字典）
+Example: get multiple configuration items (returns a dict).
 
 ```python
 dict_val = Mumu().select(1).setting.get('window_size_fixed', 'window_save_rect')
 ```
 
-#### 修改一个或多个配置（set）
+#### Set one or more configuration items (set)
 
-该方法接受一个或多个参数，表示要设置的配置项，返回一个bool值，表示是否设置成功。
+This method accepts one or more arguments specifying the configuration items to set. It returns a bool indicating whether the change succeeded.
 
-当传入参数的值为`None`时，表示还原默认值。
+When the value is `None`, the default value is restored.
 
-如果遇到需要写的配置键包含`.`或者`-`时，将`.`替换为两个`_`，`-`替换为三个`_`。
+If a configuration key contains `.` or `-`, replace `.` with two `_` and `-` with three `_`.
 
-举例：修改索引为2的模拟器的配置 window_size_fixed 的值为 true
+Example: set the `window_size_fixed` configuration of emulator 2 to `true`.
 
 ```python
 Mumu().select(2).setting.set(window_size_fixed=True)
 ```
 
-举例：修改索引为2的模拟器的配置 window_size_fixed 的值为 false，配置 window_save_rect 的值为 true
+Example: set the `window_size_fixed` configuration of emulator 2 to `false` and `window_save_rect` to `true`.
 
 ```python
 Mumu().select(2).setting.set(window_size_fixed=False, window_save_rect=True)
 ```
 
-修改索引为2的模拟器的还原配置 window_size_fixed 的值（将使用默认值）
+Restore the `window_size_fixed` configuration of emulator 2 (uses the default value).
 
 ```python
 Mumu().select(2).setting.set(window_size_fixed=None)
 ```
 
-#### 根据JSON文件内容修改配置（set_by_json）
+#### Set configuration from a JSON file (set_by_json)
 
-该方法接受一个参数，即为JSON文件的路径，返回一个bool值，表示是否设置成功。
+This method accepts one argument: the path to a JSON file. It returns a bool indicating whether the change succeeded.
 
-举例：
+Example:
 
-一个 utf8 格式 test.json 文件在C盘下，文件内容如下：
+A UTF-8 encoded `test.json` file on the C: drive with the following contents:
 
 ```json
 {
@@ -1018,55 +1018,55 @@ Mumu().select(2).setting.set(window_size_fixed=None)
 }
 ```
 
-修改索引为2的模拟器的配置，通过JSON文件方式修改。
+Apply this configuration to emulator 2 via the JSON file.
 
 ```python
 Mumu().select(2).setting.set_by_json(r'C:\test.json')
 ```
 
-#### *判断某个配置是否等于某个值（equal）
+#### *Check whether a config equals a value (equal)
 
-该方法接受两个参数，分别是配置项和值，返回一个bool值，表示是否相等。
+This method accepts two arguments: the configuration item and the value. It returns a bool indicating equality.
 
-举例：判断索引为2的模拟器的配置 window_size_fixed 是否等于 true
+Example: check whether the `window_size_fixed` configuration of emulator 2 equals `true`.
 
 ```python
 if Mumu().select(2).setting.equal('window_size_fixed', True):
-    print('相等')
+    print('Equal')
 else:
-    print('不相等')
+    print('Not equal')
 ```
 
-#### *判断某个配置是否不等于某个值（not_equal）
+#### *Check whether a config does not equal a value (not_equal)
 
-该方法接受两个参数，分别是配置项和值，返回一个bool值，表示是否不相等。
+This method accepts two arguments: the configuration item and the value. It returns a bool indicating inequality.
 
-举例：判断索引为2的模拟器的配置 window_size_fixed 是否不等于 true
+Example: check whether the `window_size_fixed` configuration of emulator 2 does not equal `true`.
 
 ```python
 if Mumu().select(2).setting.not_equal('window_size_fixed', True):
-    print('不相等')
+    print('Not equal')
 else:
-    print('相等')
+    print('Equal')
 ```
 
-#### *判断某个配置等于某个值时，修改为另一个值（equal_then_set）
+#### *If a config equals a value, change it to another value (equal_then_set)
 
-该方法接受三个参数，分别是配置项、值和新值，返回一个bool值，表示是否修改成功。
+This method accepts three arguments: the configuration item, the value, and the new value. It returns a bool indicating whether the change succeeded.
 
-举例：判断索引为2的模拟器的配置 window_size_fixed 是否等于 true，如果相等则修改为 false
+Example: check whether the `window_size_fixed` configuration of emulator 2 equals `true`; if so, change it to `false`.
 
 ```python
 Mumu().select(2).setting.equal_then_set('window_size_fixed', True, False)
 ```
 
-#### *判断某个配置不等于某个值时，修改为另一个值（not_equal_then_set）
+#### *If a config does not equal a value, change it to another value (not_equal_then_set)
 
-该方法接受三个参数，分别是配置项、值和新值，返回一个bool值，表示是否修改成功。
+This method accepts three arguments: the configuration item, the value, and the new value. It returns a bool indicating whether the change succeeded.
 
-当不传入新值时，将自动设置`值`
+When no new value is passed, the `value` argument is set automatically.
 
-举例：判断索引为2的模拟器的配置 window_size_fixed 是否不等于 true，如果不相等则修改为 true
+Example: check whether the `window_size_fixed` configuration of emulator 2 does not equal `true`; if not, change it to `true`.
 
 ```python
 Mumu().select(2).setting.not_equal_then_set('window_size_fixed', True, True)
@@ -1078,232 +1078,232 @@ Mumu().select(2).setting.not_equal_then_set('window_size_fixed', True)
 
 
 
-### *屏幕类（screen）
+### *Screen class (screen)
 
-该类提供了模拟器屏幕操作。
+This class exposes screen operations for the emulator.
 
-#### 调整模拟器分辨率（resolution）
+#### Set emulator resolution (resolution)
 
-该方法接受两个参数，分别是宽度和高度，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+This method accepts two arguments: width and height. An emulator must be selected before calling it. It returns a bool indicating whether the change succeeded.
 
-举例：修改索引为2的模拟器的分辨率为 800x600
+Example: set the resolution of emulator 2 to 800x600.
 
 ```python
 Mumu().select(2).screen.resolution(800, 600)
 ```
 
-#### 设置为手机分辨率（resolution_mobile）
+#### Set to phone resolution (resolution_mobile)
 
-该方法不需要传入参数，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+This method takes no arguments. An emulator must be selected before calling it. It returns a bool indicating whether the change succeeded.
 
-该方法调整的分辨率为 1080x1920 DPI 为 480
+This method sets the resolution to 1080x1920 with DPI 480.
 
-举例：设置索引为2的模拟器的分辨率为手机分辨率
+Example: set emulator 2 to phone resolution.
 
 ```python
 Mumu().select(2).screen.resolution_mobile()
 ```
 
-#### 设置为平板分辨率（resolution_tablet）
+#### Set to tablet resolution (resolution_tablet)
 
-该方法不需要传入参数，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+This method takes no arguments. An emulator must be selected before calling it. It returns a bool indicating whether the change succeeded.
 
-该方法调整的分辨率为 1920x1080 DPI 为 280
+This method sets the resolution to 1920x1080 with DPI 280.
 
-举例：设置索引为2的模拟器的分辨率为平板分辨率
+Example: set emulator 2 to tablet resolution.
 
 ```python
 Mumu().select(2).screen.resolution_tablet()
 ```
 
-#### 设置为超宽屏分辨率（resolution_ultrawide）
+#### Set to ultrawide resolution (resolution_ultrawide)
 
-该方法不需要传入参数，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+This method takes no arguments. An emulator must be selected before calling it. It returns a bool indicating whether the change succeeded.
 
-该方法调整的分辨率为 3200x1440 DPI 为 400
+This method sets the resolution to 3200x1440 with DPI 400.
 
-举例：设置索引为2的模拟器的分辨率为超宽屏分辨率
+Example: set emulator 2 to ultrawide resolution.
 
 ```python
 Mumu().select(2).screen.resolution_ultrawide()
 ```
 
-#### 调整模拟器DPI（dpi）
+#### Set emulator DPI (dpi)
 
-该方法接受一个参数，即为新的DPI，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+This method accepts one argument (the new DPI). An emulator must be selected before calling it. It returns a bool indicating whether the change succeeded.
 
-举例：修改索引为2的模拟器的DPI为 240
+Example: set the DPI of emulator 2 to 240.
 
 ```python
 Mumu().select(2).screen.dpi(240)
 ```
 
-#### 调整模拟器亮度（brightness）
+#### Set emulator brightness (brightness)
 
-该方法接受一个参数，即为新的亮度，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+This method accepts one argument (the new brightness). An emulator must be selected before calling it. It returns a bool indicating whether the change succeeded.
 
-参数范围为0-100
+The valid range is 0-100.
 
-举例：修改索引为2的模拟器的亮度为 50
+Example: set the brightness of emulator 2 to 50.
 
 ```python
 Mumu().select(2).screen.brightness(50)
 ```
 
-#### 调整模拟器最大帧率（max_frame_rate）
+#### Set max frame rate (max_frame_rate)
 
-该方法接受一个参数，即为新的最大帧率，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+This method accepts one argument (the new max frame rate). An emulator must be selected before calling it. It returns a bool indicating whether the change succeeded.
 
-参数范围为1-240
+The valid range is 1-240.
 
-举例：修改索引为2的模拟器的最大帧率为 60
+Example: set the max frame rate of emulator 2 to 60.
 
 ```python
 Mumu().select(2).screen.max_frame_rate(60)
 # or
-Mumu().select(2).screen.max_frame_rate()  # 缺省值为60
+Mumu().select(2).screen.max_frame_rate()  # default is 60
 ```
 
-#### 设置动态调整帧率（dynamic_adjust_frame_rate）
+#### Set dynamic frame rate adjustment (dynamic_adjust_frame_rate)
 
-该方法接受两个参数，分别是`enable`和`dynamic_low_frame_rate_limit`，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
-
-----
-
-| 参数                           | 类型   | 说明                       |
-|------------------------------|------|--------------------------|
-| enable                       | bool | 是否启用动态调整帧率               |
-| dynamic_low_frame_rate_limit | int  | 模拟器不是操作主窗口时，降低至的帧率，默认：15 |
+This method accepts two arguments: `enable` and `dynamic_low_frame_rate_limit`. An emulator must be selected before calling it. It returns a bool indicating whether the change succeeded.
 
 ----
 
-举例：启用索引为2的模拟器的动态调整帧率，降低至15帧
+| Parameter                    | Type | Description                                                              |
+|------------------------------|------|--------------------------------------------------------------------------|
+| enable                       | bool | Whether to enable dynamic frame rate adjustment                          |
+| dynamic_low_frame_rate_limit | int  | Frame rate to drop to when the emulator window is not in focus, default: 15 |
+
+----
+
+Example: enable dynamic frame rate adjustment for emulator 2, dropping to 15 fps.
 
 ```python
 Mumu().select(2).screen.dynamic_adjust_frame_rate(True, 15)
 ```
 
-举例：禁用索引为2的模拟器的动态调整帧率
+Example: disable dynamic frame rate adjustment for emulator 2.
 
 ```python
 Mumu().select(2).screen.dynamic_adjust_frame_rate(False)
 ```
 
-#### 设置垂直同步（vertical_sync）
+#### Set vertical sync (vertical_sync)
 
-该方法接受一个参数，即为`enable`，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+This method accepts one argument: `enable`. An emulator must be selected before calling it. It returns a bool indicating whether the change succeeded.
 
-举例：启用索引为2的模拟器的垂直同步
+Example: enable vertical sync for emulator 2.
 
 ```python
 Mumu().select(2).screen.vertical_sync(True)
 ```
 
-举例：禁用索引为2的模拟器的垂直同步
+Example: disable vertical sync for emulator 2.
 
 ```python
 Mumu().select(2).screen.vertical_sync(False)
 ```
 
-#### 显示帧率（show_frame_rate）
+#### Show frame rate (show_frame_rate)
 
-该方法接受一个参数，即为`enable`，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+This method accepts one argument: `enable`. An emulator must be selected before calling it. It returns a bool indicating whether the change succeeded.
 
-举例：启用索引为2的模拟器的显示帧率
+Example: enable frame-rate display for emulator 2.
 
 ```python
 Mumu().select(2).screen.show_frame_rate(True)
 ```
 
-举例：禁用索引为2的模拟器的显示帧率
+Example: disable frame-rate display for emulator 2.
 
 ```python
 Mumu().select(2).screen.show_frame_rate(False)
 ```
 
-#### 设置窗口自动旋转（window_auto_rotate）
+#### Auto-rotate window (window_auto_rotate)
 
-该方法接受一个参数，即为`enable`，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+This method accepts one argument: `enable`. An emulator must be selected before calling it. It returns a bool indicating whether the change succeeded.
 
-设置后，模拟器窗口会根据运行的应用自动旋转
+When enabled, the emulator window will rotate automatically based on the running app.
 
-举例：启用索引为2的模拟器的窗口自动旋转
+Example: enable window auto-rotate for emulator 2.
 
 ```python
 Mumu().select(2).screen.window_auto_rotate(True)
 ```
 
-举例：禁用索引为2的模拟器的窗口自动旋转
+Example: disable window auto-rotate for emulator 2.
 
 ```python
 Mumu().select(2).screen.window_auto_rotate(False)
 ```
 
-### 性能类（performance）
+### Performance class (performance)
 
-该类提供了模拟器性能操作。
+This class exposes performance operations for the emulator.
 
-该类的所有操作需要重启模拟器后生效。
+All operations in this class take effect after the emulator is restarted.
 
-#### 设置CPU和内存（set）
+#### Set CPU and memory (set)
 
-该方法接受两个参数，分别是CPU个数和内存大小，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+This method accepts two arguments: CPU count and memory size. An emulator must be selected before calling it. It returns a bool indicating whether the change succeeded.
 
-CPU个数范围为1-16
+The CPU count range is 1-16.
 
-内存大小范围为1-16，单位为GB，不支持小数
+The memory size range is 1-16 (in GB, integers only).
 
-举例：设置索引为2的模拟器的CPU为4核，内存为4GB
+Example: set emulator 2 to 4 CPU cores and 4 GB of memory.
 
 ```python
 Mumu().select(2).performance.set(4, 4)
 ```
 
-#### 设置CPU个数（cpu）
+#### Set CPU count (cpu)
 
-该方法接受一个参数，即为CPU个数，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+This method accepts one argument (the CPU count). An emulator must be selected before calling it. It returns a bool indicating whether the change succeeded.
 
-CPU个数范围为1-16
+The CPU count range is 1-16.
 
-举例：设置索引为2的模拟器的CPU为4核
+Example: set emulator 2 to 4 CPU cores.
 
 ```python
 Mumu().select(2).performance.cpu(4)
 ```
 
-#### 设置内存大小（memory）
+#### Set memory size (memory)
 
-该方法接受一个参数，即为内存大小，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+This method accepts one argument (the memory size). An emulator must be selected before calling it. It returns a bool indicating whether the change succeeded.
 
-内存大小范围为1-16，单位为GB，不支持小数
+The memory size range is 1-16 (in GB, integers only).
 
-举例：设置索引为2的模拟器的内存为4GB
+Example: set emulator 2 to 4 GB of memory.
 
 ```python
 Mumu().select(2).performance.memory(4)
 ```
 
-#### 设置强制使用独立显卡（force_discrete_graphics）
+#### Force discrete graphics (force_discrete_graphics)
 
-该方法接受一个参数，即为`enable`，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+This method accepts one argument: `enable`. An emulator must be selected before calling it. It returns a bool indicating whether the change succeeded.
 
-举例：启用索引为2的模拟器的强制使用独立显卡
+Example: enable forced discrete graphics for emulator 2.
 
 ```python
 Mumu().select(2).performance.force_discrete_graphics(True)
 ```
 
-举例：禁用索引为2的模拟器的强制使用独立显卡
+Example: disable forced discrete graphics for emulator 2.
 
 ```python
 Mumu().select(2).performance.force_discrete_graphics(False)
 ```
 
-#### 显存使用策略（renderer_strategy）
+#### VRAM usage strategy (renderer_strategy)
 
-该方法接受三个参数，选择一个即可。
+This method accepts three parameters; pass one of them.
 
-举例：设置索引为2的模拟器的显存使用策略为自动
+Example: set the VRAM usage strategy of emulator 2 to auto.
 
 ```python
 Mumu().select(2).performance.renderer_strategy(auto=True)
@@ -1311,27 +1311,27 @@ Mumu().select(2).performance.renderer_strategy(auto=True)
 Mumu().select(2).performance.renderer_strategy()
 ```
 
-举例：设置索引为2的模拟器的显存使用策略为资源占用更小
+Example: set the VRAM usage strategy of emulator 2 to "lower resource usage".
 
 ```python
 Mumu().select(2).performance.renderer_strategy(perf=True)
 ```
 
-举例：设置索引为2的模拟器的显存使用策略为画面表现更好
+Example: set the VRAM usage strategy of emulator 2 to "better visual quality".
 
 ```python
 Mumu().select(2).performance.renderer_strategy(dis=True)
 ```
 
-#### 设置磁盘类型（disk_readonly）
+#### Set disk type (disk_readonly)
 
-该方法接受一个参数，即为`enable`，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+This method accepts one argument: `enable`. An emulator must be selected before calling it. It returns a bool indicating whether the change succeeded.
 
-`enable`缺省值为`True`，开启时，磁盘类型为（只读系统盘，官方推荐），关闭时，磁盘类型为（可写系统盘）
+The default for `enable` is `True`. When enabled, the disk type is "read-only system disk" (officially recommended); when disabled, the disk type is "writable system disk".
 
-本方法提供一个助手方法`disk_writable`，用于设置磁盘类型为可写系统盘。
+This method also exposes a helper `disk_writable` for setting the disk type to writable.
 
-举例：设置索引为2的模拟器的磁盘类型为只读系统盘。
+Example: set the disk type of emulator 2 to read-only system disk.
 
 ```python
 Mumu().select(2).performance.disk_readonly(True)
@@ -1341,7 +1341,7 @@ Mumu().select(2).performance.disk_readonly(True)
 Mumu().select(2).performance.disk_readonly()
 ```
 
-举例：设置索引为2的模拟器的磁盘类型为可写系统盘
+Example: set the disk type of emulator 2 to writable system disk.
 
 ```python
 Mumu().select(2).performance.disk_readonly(False)
@@ -1351,167 +1351,167 @@ Mumu().select(2).performance.disk_readonly(False)
 Mumu().select(2).performance.disk_writable()
 ```
 
-### *网络类（network）
+### *Network class (network)
 
-该类提供了模拟器网络操作。
+This class exposes network operations for the emulator.
 
-#### 获取所有可被桥接的网卡（get_bridge_card）
+#### List all bridgeable network cards (get_bridge_card)
 
-该方法返回一个列表，表示所有可被桥接的网卡。
+This method returns a list of all bridgeable network cards.
 
-举例：获取所有可被桥接的网卡
+Example: get all bridgeable network cards.
 
 ```python
 Mumu().select(1).network.get_bridge_card()
 ```
 
-示例返回：
+Example return:
 
 ```python
-['Realtek Gaming GbE Family Controller', 'Sangfor SSL VPN CS Support System VNIC', 'Microsoft KM-TEST 环回适配器',
+['Realtek Gaming GbE Family Controller', 'Sangfor SSL VPN CS Support System VNIC', 'Microsoft KM-TEST Loopback Adapter',
  'Intel(R) Wi-Fi 6E AX211 160MHz']
 ```
 
-#### 设置网络桥接模式（bridge）
+#### Set network bridge mode (bridge)
 
-该方法接受两个参数，分别代表是否启用和网卡名称，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+This method accepts two arguments: whether to enable bridging and the network card name. An emulator must be selected before calling it. It returns a bool indicating whether the change succeeded.
 
-该方法需要安装“桥接驱动”才能使用。
+This method requires the "bridge driver" to be installed.
 
-举例：启用索引为2的模拟器的网络桥接模式，网卡名称为`Realtek Gaming GbE Family Controller`
+Example: enable bridge mode for emulator 2 with the card `Realtek Gaming GbE Family Controller`.
 
 ```python
 Mumu().select(2).network.bridge(True, 'Realtek Gaming GbE Family Controller')
 ```
 
-举例：禁用索引为2的模拟器的网络桥接模式
+Example: disable bridge mode for emulator 2.
 
 ```python
 Mumu().select(2).network.bridge(False)
 ```
 
-#### 设置网络为NAT模式（nat）
+#### Set network to NAT mode (nat)
 
-该方法无需传入参数，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+This method takes no arguments. An emulator must be selected before calling it. It returns a bool indicating whether the change succeeded.
 
-举例：设置索引为2的模拟器的网络为NAT模式
+Example: set the network of emulator 2 to NAT mode.
 
 ```python
 Mumu().select(2).network.nat()
 ```
 
-#### 设置桥接模式IP设置方式为DHCP（bridge_dhcp）
+#### Set bridge IP mode to DHCP (bridge_dhcp)
 
-该方法无需传入参数，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+This method takes no arguments. An emulator must be selected before calling it. It returns a bool indicating whether the change succeeded.
 
-举例：设置索引为2的模拟器的桥接模式IP设置方式为DHCP
+Example: set the bridge IP mode of emulator 2 to DHCP.
 
 ```python
 Mumu().select(2).network.bridge_dhcp()
 ```
 
-#### 设置桥接模式IP设置方式为静态（bridge_static）
+#### Set bridge IP mode to static (bridge_static)
 
-该方法接受5个参数，分别是IP地址、子网掩码、网关、DNS1、DNS2，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+This method accepts 5 arguments: IP address, subnet mask, gateway, DNS1, and DNS2. An emulator must be selected before calling it. It returns a bool indicating whether the change succeeded.
 
-当不填写DNS时，默认DNS1为`8.8.8.8`，DNS2为`114.114.114.114`
+When the DNS arguments are omitted, the defaults are DNS1 = `8.8.8.8` and DNS2 = `114.114.114.114`.
 
-举例：设置索引为2的模拟器的桥接模式IP设置方式为静态，IP地址为`192.168.10.10`，子网掩码为`255.255.255.0`
-，网关为`192.168.10.1`
+Example: set the bridge IP mode of emulator 2 to static, with IP `192.168.10.10`, subnet mask `255.255.255.0`,
+and gateway `192.168.10.1`.
 
 ```python
 Mumu().select(2).network.bridge_static('192.168.10.10', '255.255.255.0', '192.168.10.1')
 ```
 
-### ADB类（adb）
+### ADB class (adb)
 
-该类提供了ADB操作。
+This class exposes ADB operations.
 
-#### 获取模拟器的ADB连接信息（get_connect_info）
+#### Get the emulator's ADB connection info (get_connect_info)
 
-该无需传入参数，调用该方法前需要先选择一个模拟器，当选择一个模拟器时返回一个元组，包含IP和端口，当选择多个模拟器时返回一个字典，键为索引，值为IP和端口。
+This method takes no arguments. An emulator must be selected before calling it. When a single emulator is selected, it returns a tuple of (IP, port); when multiple emulators are selected, it returns a dict whose keys are indices and whose values are (IP, port) tuples.
 
-如果选择的模拟器无法获取到ADB连接信息，将返回`None,None`
+If the ADB connection info cannot be retrieved for a selected emulator, `(None, None)` is returned.
 
-举例：获取索引为2的模拟器的ADB连接信息
+Example: get the ADB connection info of emulator 2.
 
 ```python
 adb_ipaddr, adb_port = Mumu().select(2).adb.get_connect_info()
 ```
 
-举例：获取索引为2,4,6的模拟器的ADB连接信息
+Example: get the ADB connection info of emulators 2, 4, and 6.
 
 ```python
 adb_info = Mumu().select(2, 4, 6).adb.get_connect_info()
 ```
 
-返回示例
+Example return:
 
 ```python
 {'2': ('172.30.20.123', 16416), '4': (None, None), '6': (None, None)}
 ```
 
-#### 点击屏幕（click）
+#### Tap screen (click)
 
-该方法接受两个参数，分别是X坐标和Y坐标，调用该方法前需要先选择一个模拟器，返回bool值，表示是否点击成功。
+This method accepts two arguments: X and Y coordinates. An emulator must be selected before calling it. It returns a bool indicating whether the tap succeeded.
 
-举例：点击索引为2的模拟器的坐标为(100, 100)的位置
+Example: tap (100, 100) on emulator 2.
 
 ```python
 Mumu().select(2).adb.click(100, 100)
 ```
 
-举例：点击索引为2,4,6的模拟器的坐标为(100, 100)的位置
+Example: tap (100, 100) on emulators 2, 4, and 6.
 
 ```python
 Mumu().select(2, 4, 6).adb.click(100, 100)
 ```
 
-#### 滑动屏幕（swipe）
+#### Swipe screen (swipe)
 
-该方法提供5个参数，分别是起始X坐标、起始Y坐标、结束X坐标、结束Y坐标和滑动时间，调用该方法前需要先选择一个模拟器，返回bool值，表示是否滑动成功。
+This method accepts 5 arguments: starting X, starting Y, ending X, ending Y, and swipe duration. An emulator must be selected before calling it. It returns a bool indicating whether the swipe succeeded.
 
-举例：滑动索引为2的模拟器的坐标为(100, 100)到(200, 200)的位置，时间为500ms
+Example: swipe from (100, 100) to (200, 200) on emulator 2 over 500 ms.
 
 ```python
 Mumu().select(2).adb.swipe(100, 100, 200, 200, 500)
 #  or
-Mumu().select(2).adb.swipe(100, 100, 200, 200)  # 缺省值为500ms
+Mumu().select(2).adb.swipe(100, 100, 200, 200)  # default is 500 ms
 ```
 
-举例：滑动索引为2,4,6的模拟器的坐标为(100, 100)到(200, 200)的位置，时间为500ms
+Example: swipe from (100, 100) to (200, 200) on emulators 2, 4, and 6 over 500 ms.
 
 ```python
 Mumu().select(2, 4, 6).adb.swipe(100, 100, 200, 200, 500)
 ```
 
-#### 文本输入（input_text）
+#### Input text (input_text)
 
-该方法接受一个参数，即为要输入的文本，调用该方法前需要先选择一个模拟器，返回bool值，表示是否输入成功。
+This method accepts one argument (the text to input). An emulator must be selected before calling it. It returns a bool indicating whether the input succeeded.
 
-举例：在索引为2的模拟器中输入文本`Hello World`
+Example: type `Hello World` on emulator 2.
 
 ```python
 Mumu().select(2).adb.input_text('Hello World')
 ```
 
-举例：在索引为2,4,6的模拟器中输入文本`Hello World`
+Example: type `Hello World` on emulators 2, 4, and 6.
 
 ```python
 Mumu().select(2, 4, 6).adb.input_text('Hello World')
 ```
 
-#### 模拟按键（key_event）
+#### Simulate key event (key_event)
 
-该方法接受一个参数，即为要模拟的按键，调用该方法前需要先选择一个模拟器，返回bool值，表示是否模拟成功。
+This method accepts one argument (the key to simulate). An emulator must be selected before calling it. It returns a bool indicating whether the key event succeeded.
 
-举例：在索引为2的模拟器中模拟按键`HOME`
+Example: simulate the `HOME` key on emulator 2.
 
 ```python
 Mumu().select(2).adb.key_event(3)
 ```
 
-举例：通过本项目提供的按键常量模拟按键`HOME`
+Example: simulate the `HOME` key using the key constants this project provides.
 
 ```python
 from mumu.constant import AndroidKey
@@ -1519,7 +1519,7 @@ from mumu.constant import AndroidKey
 Mumu().select(2).adb.key_event(AndroidKey.KEYCODE_HOME)
 ```
 
-举例：在索引为2,4,6的模拟器中模拟音量+
+Example: simulate volume up on emulators 2, 4, and 6.
 
 ```python
 from mumu.constant import AndroidKey
@@ -1527,131 +1527,131 @@ from mumu.constant import AndroidKey
 Mumu().select(2, 4, 6).adb.key_event(AndroidKey.KEYCODE_VOLUME_UP)
 ```
 
-#### 上传文件（push）
+#### Push file (push)
 
-该方法接受两个参数，分别是本地文件路径和模拟器文件路径，调用该方法前需要先选择一个模拟器，返回bool值，表示是否上传成功。
+This method accepts two arguments: the local file path and the emulator file path. An emulator must be selected before calling it. It returns a bool indicating whether the upload succeeded.
 
-当上传失败时，会触发一个`warning`警告。
+When the upload fails, a `warning` is emitted.
 
-举例：上传索引为2的模拟器的本地文件`C:\test.txt`到模拟器的`/sdcard/test.txt`
+Example: push the local file `C:\test.txt` to `/sdcard/test.txt` on emulator 2.
 
 ```python
 Mumu().select(2).adb.push(r'C:\test.txt', '/sdcard/test.txt')
 ```
 
-举例：上传索引为2,4,6的模拟器的本地文件`C:\test.txt`到模拟器的`/sdcard/test.txt`
+Example: push the local file `C:\test.txt` to `/sdcard/test.txt` on emulators 2, 4, and 6.
 
 ```python
 Mumu().select(2, 4, 6).adb.push(r'C:\test.txt', '/sdcard/test.txt')
 ```
 
-#### 上传文件到Download目录（push_download）
+#### Push file to Download directory (push_download)
 
-该方法提供两个参数，分别是本地文件路径和模拟器文件名，调用该方法前需要先选择一个模拟器，返回bool值，表示是否上传成功。
+This method accepts two arguments: the local file path and the file name on the emulator. An emulator must be selected before calling it. It returns a bool indicating whether the upload succeeded.
 
-当`模拟器文件名`为`None`时，将自动使用本地文件名。
+When `emulator file name` is `None`, the local file name is used automatically.
 
-举例：上传索引为2的模拟器的本地文件`C:\test.txt`到模拟器的`Download`目录
+Example: push the local file `C:\test.txt` to the `Download` directory on emulator 2.
 
 ```python
 Mumu().select(2).adb.push_download(r'C:\test.txt')
 ```
 
-举例：上传索引为2,4,6的模拟器的本地文件`C:\test.txt`到模拟器的`Download`目录，重命名为：`test1.txt`
+Example: push the local file `C:\test.txt` to the `Download` directory on emulators 2, 4, and 6 and rename it to `test1.txt`.
 
 ```python
 Mumu().select(2, 4, 6).adb.push_download(r'C:\test.txt', 'test1.txt')
 ```
 
-#### 下载文件（pull）
+#### Pull file (pull)
 
-该方法提供两个参数，分别是模拟器文件路径和本地文件路径，调用该方法前需要先选择一个模拟器，返回bool值，表示是否下载成功。
+This method accepts two arguments: the emulator file path and the local file path. An emulator must be selected before calling it. It returns a bool indicating whether the download succeeded.
 
-当下载失败时，会触发一个`warning`警告。
+When the download fails, a `warning` is emitted.
 
-举例：下载索引为2的模拟器的模拟器文件`/sdcard/test.txt`到本地的`C:\test.txt`
+Example: pull `/sdcard/test.txt` from emulator 2 to local `C:\test.txt`.
 
 ```python
 Mumu().select(2).adb.pull('/sdcard/test.txt', r'C:\test.txt')
 ```
 
-#### 清理应用数据（clear)
+#### Clear app data (clear)
 
-该方法接受一个参数，即为应用包名，调用该方法前需要先选择一个模拟器，返回bool值，表示是否清理成功。
+This method accepts one argument (the app's package name). An emulator must be selected before calling it. It returns a bool indicating whether the clear succeeded.
 
-如果包名错误会抛出异常
+If the package name is invalid, an exception is raised.
 
-举例：清理索引为2的模拟器的应用数据
+Example: clear app data on emulator 2.
 
 ```python
 Mumu().select(2).adb.clear('com.miHoYo.Yuanshen')
 ```
 
-### GUI自动化类（auto）
+### GUI automation class (auto)
 
-本类提供了模拟器的GUI自动化操作，例如：通过图片定位、坐标定位、文字定位实现自动化操作。
+This class exposes GUI automation for the emulator, e.g. driving operations via image, coordinate, or text matching.
 
-先决条件：需要安装`opencv-python`库，可以通过`pip install opencv-python`安装。
+Prerequisite: install the `opencv-python` library, e.g. `pip install opencv-python`.
 
-实时帧采集支持两种后端：
+Live frame capture supports two backends:
 
-- `mumu_sdk`（推荐）：使用 MuMu 官方高性能截图接口，通常速度更高。
-- `scrcpy`：兼容后端，需要安装`scrcpy-client`（`pip install scrcpy-client`）。
+- `mumu_sdk` (recommended): uses MuMu's official high-performance screenshot API; usually faster.
+- `scrcpy`: a compatibility backend; requires `scrcpy-client` (`pip install scrcpy-client`).
 
-#### 处理模拟器实时帧（create_handle）
+#### Process emulator live frames (create_handle)
 
-该方法接受三个参数：
+This method accepts three arguments:
 
-- `handle`：处理帧的回调方法。
-- `backend`：`auto`/`mumu_sdk`/`scrcpy`，默认`auto`。
-- `fps`：仅对`mumu_sdk`生效，表示采集帧率，默认`30`。
+- `handle`: callback for processing frames.
+- `backend`: `auto`/`mumu_sdk`/`scrcpy`, default `auto`.
+- `fps`: only takes effect with `mumu_sdk`; the capture frame rate, default `30`.
 
-当`backend='auto'`时，优先使用`mumu_sdk`，如果不可用会自动回退到`scrcpy`。
+When `backend='auto'`, `mumu_sdk` is preferred and falls back to `scrcpy` automatically if it is unavailable.
 
-`handle`方法包含两个参数`frame`和`mumu`，分别表示帧和当前模拟器对象。
+The `handle` callback takes two arguments, `frame` and `mumu`, representing the frame and the current emulator object.
 
-`frame`为`numpy`数组，可以直接使用`opencv`的方法处理。
-`mumu`为当前模拟器对象，仅选中了当前模拟器（线程隔离，可直接调用该对象的API）。
+`frame` is a `numpy` array and can be processed directly with `opencv` methods.
+`mumu` is the current emulator object with only the current emulator selected (thread-isolated; you can call its API directly).
 
-举例：处理索引为2的模拟器的帧
+Example: process frames from emulator 2.
 
 ```python
 def handle(frame, mumu):
     # do something
-    print('接收到模拟器：', mumu.core.utils.get_vm_id(), '的帧')
+    print('Received frame from emulator:', mumu.core.utils.get_vm_id())
 
 
 Mumu().select(2).auto.create_handle(handle)
 ```
 
-举例：处理索引为2,4,6的模拟器的帧
+Example: process frames from emulators 2, 4, and 6.
 
 ```python
 def handle(frame, mumu):
     # do something
-    print('接收到模拟器：', mumu.core.utils.get_vm_id(), '的帧')
+    print('Received frame from emulator:', mumu.core.utils.get_vm_id())
 
 
 Mumu().select(2, 4, 6).auto.create_handle(handle)
 ```
 
-举例：强制使用MuMu SDK并设置帧率
+Example: force the MuMu SDK and set the frame rate.
 
 ```python
 Mumu().select(2).auto.create_handle(handle, backend='mumu_sdk', fps=60)
 ```
 
-举例：强制使用scrcpy后端
+Example: force the scrcpy backend.
 
 ```python
 Mumu().select(2).auto.create_handle(handle, backend='scrcpy')
 ```
 
-#### 保存模拟器实时帧（save）
+#### Save emulator live frame (save)
 
-该方法接受两个参数，分别为`frame`和`path`，用于保存模拟器的帧。
+This method accepts two arguments, `frame` and `path`, and saves the emulator frame.
 
-举例：保存帧到`C:\test.png`
+Example: save a frame to `C:\test.png`.
 
 ```python
 def handle(frame, mumu):
@@ -1661,7 +1661,7 @@ def handle(frame, mumu):
 Mumu().select(2).auto.create_handle(handle)
 ```
 
-举例：保存索引为3的模拟器的帧到`C:\test.png`
+Example: save a frame from emulator 3 to `C:\test.png`.
 
 ```python
 def handle(frame, mumu):
@@ -1672,94 +1672,94 @@ def handle(frame, mumu):
 Mumu().select(2, 3).auto.create_handle(handle)
 ```
 
-#### 在帧中查找第一个图片（locateOnScreen）
+#### Find the first image in a frame (locateOnScreen)
 
-该方法接受4个参数，分别为`haystack`、`needle`、`confidence`和`grayscale`，用于在帧中查找图片。
+This method accepts 4 arguments: `haystack`, `needle`, `confidence`, and `grayscale`, and searches for an image inside a frame.
 
-`confidence`为相似度，范围为0-1，缺省值为0.8
+`confidence` is the similarity threshold, in the range 0-1, default 0.8.
 
-`grayscale`为是否使用灰度查找，缺省值为`False
+`grayscale` toggles grayscale matching; default `False`.
 
-举例：在帧中查找图片`C:\test.png`
+Example: find the image `C:\test.png` inside a frame.
 
 ```python
 def handle(frame, mumu):
     # do something
-    print('接收到模拟器：', mumu.core.utils.get_vm_id(), '的帧')
+    print('Received frame from emulator:', mumu.core.utils.get_vm_id())
     pos = mumu.auto.locateOnScreen(frame, r'C:\test.png')
     if pos:
-        print('找到图片：', pos)
+        print('Image found:', pos)
     else:
-        print('未找到图片')
+        print('Image not found')
 ```
 
-#### 在帧中查找第一张图片的中心点（locateCenterOnScreen）
+#### Find the center of the first image in a frame (locateCenterOnScreen)
 
-该方法接受4个参数，分别为`haystack`、`needle`、`confidence`和`grayscale`，用于在帧中查找图片。
+This method accepts 4 arguments: `haystack`, `needle`, `confidence`, and `grayscale`, and searches for an image inside a frame.
 
-`confidence`为相似度，范围为0-1，缺省值为0.8
+`confidence` is the similarity threshold, in the range 0-1, default 0.8.
 
-`grayscale`为是否使用灰度查找，缺省值为`False
+`grayscale` toggles grayscale matching; default `False`.
 
 ```python
 def handle(frame, mumu):
     # do something
-    print('接收到模拟器：', mumu.core.utils.get_vm_id(), '的帧')
+    print('Received frame from emulator:', mumu.core.utils.get_vm_id())
     pos = mumu.auto.locateCenterOnScreen(frame, r'C:\test.png')
     if pos:
-        print('找到图片中心点：', pos)
+        print('Image center found:', pos)
     else:
-        print('未找到图片')
+        print('Image not found')
 
 ```
 
-#### 在帧中查找所有图片（locateAllOnScreen）
+#### Find all images in a frame (locateAllOnScreen)
 
-该方法接受4个参数，分别为`haystack`、`needle`、`confidence`和`grayscale`，用于在帧中查找图片。
+This method accepts 4 arguments: `haystack`, `needle`, `confidence`, and `grayscale`, and searches for an image inside a frame.
 
-`confidence`为相似度，范围为0-1，缺省值为0.8
-`grayscale`为是否使用灰度查找，缺省值为`False
+`confidence` is the similarity threshold, in the range 0-1, default 0.8.
+`grayscale` toggles grayscale matching; default `False`.
 
 ```python
 def handle(frame, mumu):
     # do something
-    print('接收到模拟器：', mumu.core.utils.get_vm_id(), '的帧')
+    print('Received frame from emulator:', mumu.core.utils.get_vm_id())
     pos = mumu.auto.locateAllOnScreen(frame, r'C:\test.png')
     if pos:
-        print('找到图片：', pos)
+        print('Images found:', pos)
     else:
-        print('未找到图片')
+        print('Image not found')
 
 ```
 
-#### 获取Box的中心点（center）
+#### Get the center of a Box (center)
 
-该方法接受一个参数，即为`box`，用于获取Box的中心点，返回x和y
+This method accepts one argument, `box`, and returns the center of the box as (x, y).
 
-`box`为一个元组，包含4个元素，分别为左上角x、左上角y、右下角x、右下角y
+`box` is a tuple of 4 elements: top-left x, top-left y, bottom-right x, and bottom-right y.
 
 ```python
 def handle(frame, mumu):
     # do something
-    print('接收到模拟器：', mumu.core.utils.get_vm_id(), '的帧')
+    print('Received frame from emulator:', mumu.core.utils.get_vm_id())
     pos = mumu.auto.locateOnScreen(frame, r'C:\test.png')
     if pos:
-        print('找到图片：', pos)
+        print('Image found:', pos)
         x, y = mumu.auto.center(pos)
-        print('中心点：', x, y)
+        print('Center:', x, y)
     else:
-        print('未找到图片')
+        print('Image not found')
 
 ```
 
-#### 实战举例
+#### Practical example
 
-监听模拟器3的帧，当帧中出现`test.png`时，返回`找到了`，并返回当前时间和模拟器ID，然后返回到桌面。
+Listen for frames from emulator 3. When `test.png` appears, print "Found", along with the current time and the emulator ID, and then go back to the home screen.
 
 ```python
 def handle(frame, mumu: Mumu):
     if mumu.auto.locateOnScreen(frame, './test.png', confidence=0.75, grayscale=True):
-        print("找到了", time.time(), '在模拟器', mumu.core.utils.get_vm_id())
+        print("Found", time.time(), 'on emulator', mumu.core.utils.get_vm_id())
         mumu.androidEvent.go_home()
 
 
@@ -1767,10 +1767,10 @@ Mumu().select(3).auto.create_handle(handle)
 
 ```
 
-## 支持本项目
+## Supporting This Project
 
-作者：wlkjyy
+Author: wlkjyy
 
-Mail：<wlkjyy@vip.qq.com>
+Mail: <wlkjyy@vip.qq.com>
 
-WeCHAT：laravel_debug
+WeChat: laravel_debug

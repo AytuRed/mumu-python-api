@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time : 2024/7/29 下午3:05
+# @Time : 2024/7/29 15:05
 # @Author : wlkjyy
 # @File : power.py
 # @Software: PyCharm
@@ -14,8 +14,8 @@ class Power:
 
     def start(self, package: str = None) -> bool:
         """
-            启动模拟器(start)
-        :param package: 启动时自动启动应用的应用包名
+            Start the emulator.
+        :param package: optional package name to auto-launch on start
         :return:
         """
         self.utils.set_operate('control')
@@ -31,7 +31,7 @@ class Power:
 
     def shutdown(self):
         """
-            关闭模拟器(shutdown)
+            Shut down the emulator.
         :return:
         """
         self.utils.set_operate('control')
@@ -43,7 +43,7 @@ class Power:
 
     def restart(self):
         """
-            重启模拟器(restart)
+            Restart the emulator.
         :return:
         """
         self.utils.set_operate('control')
@@ -55,14 +55,14 @@ class Power:
 
     def stop(self):
         """
-            关闭一个模拟器
+            Stop an emulator.
         :return:
         """
         return self.shutdown()
 
     def reboot(self):
         """
-            重启一个模拟器
+            Reboot an emulator.
         :return:
         """
         return self.restart()

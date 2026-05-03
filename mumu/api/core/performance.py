@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time : 2024/7/29 下午9:58
+# @Time : 2024/7/29 21:58
 # @Author : wlkjyy
 # @File : performance.py
 # @Software: PyCharm
@@ -14,9 +14,9 @@ class Performance:
 
     def set(self, cpu_num: int = 1, mem_gb: int = 2):
         """
-            设置模拟器性能
-        :param cpu_num: CPU个数
-        :param mem_gb: 内存大小
+            Set emulator performance.
+        :param cpu_num: number of CPU cores
+        :param mem_gb: memory size in GB
         :return:
         """
         cpu_num = max(1, min(16, cpu_num))
@@ -29,8 +29,8 @@ class Performance:
 
     def cpu(self, cpu_num: int):
         """
-            设置模拟器CPU个数
-        :param cpu_num: CPU个数
+            Set the emulator CPU core count.
+        :param cpu_num: number of CPU cores
         :return:
         """
         cpu_num = max(1, min(16, cpu_num))
@@ -42,8 +42,8 @@ class Performance:
 
     def memory(self, mem_gb: int):
         """
-            设置模拟器内存大小
-        :param mem_gb: 内存大小
+            Set the emulator memory size.
+        :param mem_gb: memory size in GB
         :return:
         """
         mem_gb = max(1, mem_gb)
@@ -55,8 +55,8 @@ class Performance:
 
     def force_discrete_graphics(self, enable: bool):
         """
-            强制使用独立显卡
-        :param enable: 是否启用
+            Force use of the discrete GPU.
+        :param enable: whether to enable
         :return:
         """
         return Setting(self.utils).set(
@@ -65,10 +65,10 @@ class Performance:
 
     def renderer_strategy(self, auto=True, dis=False, perf=False):
         """
-            显存使用策略
-        :param auto: 自动调优
-        :param dis: 画面表现更好
-        :param perf: 资源占用更小
+            VRAM usage strategy.
+        :param auto: auto tuning
+        :param dis: better visual quality
+        :param perf: lower resource usage
         :return:
         """
         if dis:
@@ -88,8 +88,8 @@ class Performance:
 
     def disk_readonly(self, enable: bool = True):
         """
-            是否为只读系统盘
-        :param enable: 是否只读
+            Set whether the system disk is read-only.
+        :param enable: whether read-only
         :return:
         """
         return Setting(self.utils).set(
@@ -98,8 +98,7 @@ class Performance:
 
     def disk_writable(self):
         """
-            是否为可写系统盘
-        :param enable: 是否可写
+            Make the system disk writable.
         :return:
         """
         return self.disk_readonly(False)

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time : 2024/7/29 下午6:34
+# @Time : 2024/7/29 18:34
 # @Author : wlkjyy
 # @File : develop.py
 # @Software: PyCharm
@@ -15,8 +15,8 @@ class AndroidEvent:
 
     def __action(self, action_name: str) -> bool:
         """
-            执行操作
-        :param action_name: 操作名称
+            Execute an action.
+        :param action_name: action name
         :return:
         """
         self.utils.set_operate("control")
@@ -28,84 +28,84 @@ class AndroidEvent:
 
     def rotate(self) -> bool:
         """
-            屏幕旋转
+            Rotate the screen.
         :return:
         """
         return self.__action("rotate")
 
     def rotates(self) -> bool:
         """
-            rotate 的兼容别名
+            Compatibility alias for rotate.
         :return:
         """
         return self.rotate()
 
     def go_home(self) -> bool:
         """
-            返回主页
+            Go to the home screen.
         :return:
         """
         return self.__action("go_home")
 
     def go_back(self) -> bool:
         """
-            返回
+            Go back.
         :return:
         """
         return self.__action("go_back")
 
     def top_most(self) -> bool:
         """
-            置顶
+            Pin window on top.
         :return:
         """
         return self.__action("top_most")
 
     def fullscreen(self) -> bool:
         """
-            全屏
+            Fullscreen.
         :return:
         """
         return self.__action("fullscreen")
 
     def shake(self) -> bool:
         """
-            摇一摇
+            Shake the device.
         :return:
         """
         return self.__action("shake")
 
     def screenshot(self) -> bool:
         """
-            截图
+            Take a screenshot.
         :return:
         """
         return self.__action("screenshot")
 
     def volume_up(self) -> bool:
         """
-            音量+
+            Volume up.
         :return:
         """
         return self.__action("volume_up")
 
     def volume_down(self) -> bool:
         """
-            音量-
+            Volume down.
         :return:
         """
         return self.__action("volume_down")
 
     def volume_mute(self) -> bool:
         """
-            静音
+            Mute volume.
         :return:
         """
         return self.__action("volume_mute")
 
     def go_task(self) -> bool:
         """
-            按下安卓任务键
+            Press the Android recent-tasks key.
         :return:
         """
         self.utils.set_operate("adb")
@@ -117,9 +117,9 @@ class AndroidEvent:
 
     def location(self, lon: float, lat: float) -> bool:
         """
-          修改虚拟定位
-        :param lon:要修改虚拟定位的经度，-180 ~ 180 之间浮点有效
-        :param lat: 要修改虚拟定位的纬度，-90 ~ 90 之间浮点有效
+          Set the virtual GPS location.
+        :param lon: longitude (float between -180 and 180)
+        :param lat: latitude (float between -90 and 90)
         :return:
         """
         if lon < -180 or lon > 180:
@@ -137,10 +137,10 @@ class AndroidEvent:
 
     def gyro(self, x: float, y: float, z: float) -> bool:
         """
-            修改虚拟陀螺仪
-        :param x: x轴
-        :param y: y轴
-        :param z: z轴
+            Set virtual gyroscope values.
+        :param x: x-axis
+        :param y: y-axis
+        :param z: z-axis
         :return:
         """
         self.utils.set_operate("control")

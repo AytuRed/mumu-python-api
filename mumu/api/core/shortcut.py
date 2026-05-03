@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time : 2024/7/29 下午7:11
+# @Time : 2024/7/29 19:11
 # @Author : wlkjyy
 # @File : shortcut.py
 # @Software: PyCharm
@@ -16,10 +16,10 @@ class Shortcut:
 
     def create(self, name: str, icon: str, package: str) -> bool:
         """
-            创建桌面快捷方式
-        :param name: 创建快捷方式的名称
-        :param icon: 创建快捷方式的图标路径
-        :param package: 创建自动启动应用的快捷方式
+            Create a desktop shortcut.
+        :param name: shortcut name
+        :param icon: path to the shortcut icon
+        :param package: package name to auto-launch from the shortcut
         :return:
         """
         self.utils.set_operate('control')
@@ -36,7 +36,7 @@ class Shortcut:
 
     def delete(self) -> bool:
         """
-            删除桌面快捷方式
+            Delete the desktop shortcut.
         :return:
         """
         self.utils.set_operate('control')

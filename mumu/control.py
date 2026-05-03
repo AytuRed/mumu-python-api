@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time : 2024/7/28 下午10:22
+# @Time : 2024/7/28 22:22
 # @Author : wlkjyy
 # @File : control.py
 # @Software: PyCharm
@@ -20,8 +20,8 @@ class Control:
 
     def start(self, package=None) -> bool:
         """
-        启动模拟器
-        :param package: 启动完成后打开指定包名的应用
+        Start the emulator.
+        :param package: open the app with this package after launch
         :return:
         """
 
@@ -44,7 +44,7 @@ class Control:
 
     def shutdown(self):
         """
-        关闭模拟器
+        Shut down the emulator.
         :return:
         """
         if isinstance(self.__vm_index, int):
@@ -63,8 +63,8 @@ class Control:
 
     def restart(self):
         """
-        重启模拟器
-        :param package: 重启完成后打开指定包名的应用
+        Restart the emulator.
+        :param package: open the app with this package after restart
         :return:
         """
         if isinstance(self.__vm_index, int):
@@ -83,7 +83,7 @@ class Control:
 
     def show_window(self):
         """
-        显示窗口
+        Show the window.
         :return:
         """
         if isinstance(self.__vm_index, int):
@@ -102,8 +102,7 @@ class Control:
 
     def hide_window(self):
         """
-        隐藏窗口
-        相当于后台运行
+        Hide the window (run in background).
         :return:
         """
         if isinstance(self.__vm_index, int):
@@ -122,8 +121,8 @@ class Control:
 
     def install(self, apk: str) -> bool:
         """
-        安装应用
-        :param apk: apk文件路径
+        Install an app.
+        :param apk: path to the apk file
         :return:
         """
         if not os.path.exists(apk):
@@ -147,8 +146,8 @@ class Control:
 
     def uninstall(self, package: str) -> bool:
         """
-        卸载应用
-        :param package: 包名
+        Uninstall an app.
+        :param package: package name
         :return:
         """
         if isinstance(self.__vm_index, int):
@@ -170,8 +169,8 @@ class Control:
 
     def launch(self, package: str) -> bool:
         """
-        打开应用
-        :param package: 包名
+        Launch an app.
+        :param package: package name
         :return:
         """
         if isinstance(self.__vm_index, int):
@@ -193,8 +192,8 @@ class Control:
 
     def close(self, package: str) -> bool:
         """
-        关闭应用
-        :param package: 包名
+        Close an app.
+        :param package: package name
         :return:
         """
         if isinstance(self.__vm_index, int):
@@ -219,7 +218,7 @@ class Control:
 
     def enable_root_permission(self):
         """
-            开启ROOT权限
+            Enable ROOT permission.
         :return:
         """
         if isinstance(self.__vm_index, int):
@@ -240,7 +239,7 @@ class Control:
 
     def disable_root_permission(self):
         """
-            关闭ROOT权限
+            Disable ROOT permission.
         :return:
         """
         if isinstance(self.__vm_index, int):

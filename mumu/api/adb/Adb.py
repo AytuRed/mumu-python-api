@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time : 2024/7/30 上午8:40
+# @Time : 2024/7/30 08:40
 # @Author : wlkjyy
 # @File : Adb.py
 # @Software: PyCharm
@@ -29,8 +29,8 @@ class Adb:
 
     def get_connect_info(self):
         """
-        获取连接信息
-        :return: 返回一个包含 ADB 连接信息的字典，或者 (None, None) 如果没有获取到信息。
+        Get ADB connection info.
+        :return: dict of ADB connection info, or (None, None) if unavailable.
         """
         self.utils.set_operate("adb")
         ret_code, retval = self.utils.run_command([''])
@@ -60,44 +60,44 @@ class Adb:
 
     def click(self, x: int, y: int):
         """
-            点击(click)
-        :param x: 横坐标
-        :param y: 纵坐标
+            Tap (click).
+        :param x: x coordinate
+        :param y: y coordinate
         :return:
         """
         return self.__run_adb_cmd(f"shell input tap {x} {y}")
 
     def swipe(self, from_x: int, from_y: int, to_x: int, to_y: int, duration: int = 500):
         """
-            滑动(swipe)
-        :param from_x: 起始横坐标
-        :param from_y: 起始纵坐标
-        :param to_x: 终点横坐标
-        :param to_y: 终点纵坐标
-        :param duration: 滑动时间
+            Swipe.
+        :param from_x: start x coordinate
+        :param from_y: start y coordinate
+        :param to_x: end x coordinate
+        :param to_y: end y coordinate
+        :param duration: swipe duration in ms
         :return:
         """
         return self.__run_adb_cmd(f"shell input swipe {from_x} {from_y} {to_x} {to_y} {duration}")
 
     def input_text(self, text: str):
         """
-            输入(input)
-        :param text: 输入的文本
+            Input text.
+        :param text: text to input
         :return:
         """
         return self.__run_adb_cmd(f"input_text {text}")
 
     def key_event(self, key: Union[int, str]):
         """
-            按键(keyevent)
-        :param key: 键值
+            Key event.
+        :param key: key code
         :return:
         """
         return self.__run_adb_cmd(f"shell input keyevent {key}")
 
     def __connect(self):
         """
-            获取可用的连接
+            Get an available connection.
         :return:
         """
 
@@ -127,9 +127,9 @@ class Adb:
 
     def push(self, src: str, path: str):
         """
-            传输文件(push)
-        :param src: 源文件
-        :param path: 目标路径
+            Transfer a file (push).
+        :param src: source file
+        :param path: destination path
         :return:
         """
 
@@ -155,10 +155,9 @@ class Adb:
 
     def push_download(self, src: str, new_name: str = None):
         """
-            传输文件到Download文件夹(push)
+            Transfer a file into the Download folder (push).
         :param new_name:
-        :param src: 源文件
-        :param path: 目标路径
+        :param src: source file
         :return:
         """
         if new_name:
@@ -170,9 +169,9 @@ class Adb:
 
     def pull(self, src: str, path: str):
         """
-            传输文件(pull)
-        :param src: 源文件
-        :param path: 目标路径
+            Transfer a file (pull).
+        :param src: source file
+        :param path: destination path
         :return:
         """
 
@@ -195,8 +194,8 @@ class Adb:
 
     def clear(self, package: str):
         """
-            清除应用数据(clear)
-        :param package: 应用包名
+            Clear app data.
+        :param package: package name
         :return:
         """
         return self.__run_adb_cmd(f"shell pm clear {package}")

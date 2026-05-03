@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time : 2024/7/29 下午8:20
+# @Time : 2024/7/29 20:20
 # @Author : wlkjyy
 # @File : setting.py
 # @Software: PyCharm
@@ -16,7 +16,7 @@ class Setting:
 
     def all(self, all_writable: bool = False) -> dict:
         """
-            获取所有配置项
+            Get all settings.
         :return:
         """
         self.utils.set_operate("setting")
@@ -33,7 +33,7 @@ class Setting:
 
     def get(self, *args) -> Union[dict, str]:
         """
-            获取一个或多个配置项
+            Get one or more settings.
         :param args:
         :return:
         """
@@ -46,7 +46,7 @@ class Setting:
         if ret_code == 0:
             ret = json.loads(retval)
             for key in ret.keys():
-                # 类型转换
+                # Type coercion
                 val = ret[key]
                 if isinstance(val, str) and val.isdigit():
                     ret[key] = int(val)
@@ -65,7 +65,7 @@ class Setting:
 
     def set(self, **kwargs) -> bool:
         """
-            设置一个或多个配置项
+            Set one or more settings.
         :param kwargs:
         :return:
         """
@@ -96,8 +96,8 @@ class Setting:
 
     def set_by_json(self, file_path: str) -> bool:
         """
-            通过json文件设置配置项
-        :param file_path: json文件路径
+            Apply settings from a JSON file.
+        :param file_path: path to the JSON file
         :return:
         """
         if not os.path.exists(file_path):
@@ -113,28 +113,28 @@ class Setting:
 
     def equal(self, key: str, value) -> bool:
         """
-            判断配置项是否等于某个值
-        :param key: 配置项
-        :param value: 值
+            Check whether a setting equals a value.
+        :param key: setting key
+        :param value: value to compare
         :return:
         """
         return self.get(key) == value
 
     def not_equal(self, key: str, value) -> bool:
         """
-            判断配置项是否不等于某个值
-        :param key: 配置项
-        :param value: 值
+            Check whether a setting does NOT equal a value.
+        :param key: setting key
+        :param value: value to compare
         :return:
         """
         return self.get(key) != value
 
     def equal_then_set(self, key: str, value, new_value) -> bool:
         """
-            判断配置项是否等于某个值并设置新值
-        :param key: 配置项
-        :param value: 值
-        :param new_value: 新值
+            If a setting equals a value, set it to a new value.
+        :param key: setting key
+        :param value: value to compare
+        :param new_value: new value to set
         :return:
         """
         if self.equal(key, value):
@@ -144,10 +144,10 @@ class Setting:
 
     def not_equal_then_set(self, key: str, value, new_value=None) -> bool:
         """
-            判断配置项是否不等于某个值并设置新值
-        :param key: 配置项
-        :param value: 值
-        :param new_value: 新值
+            If a setting does NOT equal a value, set it to a new value.
+        :param key: setting key
+        :param value: value to compare
+        :param new_value: new value to set
         :return:
         """
         if self.not_equal(key, value):

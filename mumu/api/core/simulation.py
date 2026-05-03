@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time : 2024/7/29 下午7:25
+# @Time : 2024/7/29 19:25
 # @Author : wlkjyy
 # @File : simulation.py
 # @Software: PyCharm
@@ -25,8 +25,8 @@ class Simulation:
 
     def mac_address(self, mac: str = None) -> bool:
         """
-            设置模拟器MAC地址
-        :param mac: 设置模拟器的MAC地址
+            Set the emulator MAC address.
+        :param mac: MAC address to set
         :return:
         """
         if mac is None:
@@ -36,8 +36,8 @@ class Simulation:
 
     def imei(self, imei: str = None) -> bool:
         """
-            设置模拟器IMEI
-        :param imei: 设置模拟器的IMEI
+            Set the emulator IMEI.
+        :param imei: IMEI to set
         :return:
         """
         if imei is None:
@@ -47,8 +47,8 @@ class Simulation:
 
     def imsi(self, imsi: str = None) -> bool:
         """
-            设置模拟器IMSI
-        :param imsi: 设置模拟器的IMSI
+            Set the emulator IMSI.
+        :param imsi: IMSI to set
         :return:
         """
         if imsi is None:
@@ -58,8 +58,8 @@ class Simulation:
 
     def android_id(self, android_id: str = None) -> bool:
         """
-            设置模拟器Android ID
-        :param android_id: 设置模拟器的Android ID
+            Set the emulator Android ID.
+        :param android_id: Android ID to set
         :return:
         """
         if android_id is None:
@@ -69,32 +69,32 @@ class Simulation:
 
     def model(self, model: str) -> bool:
         """
-            设置模拟器型号
-        :param model: 设置模拟器的型号
+            Set the emulator device model.
+        :param model: device model to set
         :return:
         """
         return self.__action('model', model)
 
     def brand(self, brand: str) -> bool:
         """
-            设置模拟器品牌
-        :param brand: 设置模拟器的品牌
+            Set the emulator brand.
+        :param brand: brand to set
         :return:
         """
         return self.__action('brand', brand)
 
     def solution(self, solution: str) -> bool:
         """
-            设置模拟器硬件
-        :param solution: 设置模拟器的硬件
+            Set the emulator hardware solution.
+        :param solution: hardware solution to set
         :return:
         """
         return self.__action('solution', solution)
 
     def phone_number(self, phone_number: str = None) -> bool:
         """
-            设置模拟器手机号码
-        :param phone_number: 设置模拟器的手机号码
+            Set the emulator phone number.
+        :param phone_number: phone number to set
         :return:
         """
         if phone_number is None:
@@ -105,11 +105,11 @@ class Simulation:
     def gpu_model(self, gpu_model_name: str = "GeForce GTX 4090 Ti", top_model=False, middle_model=False,
                   low_model=False) -> bool:
         """
-            设置模拟器GPU型号
-        :param gpu_model_name: 自定义GPU型号
-        :param top_model: 使用顶级GPU型号
-        :param middle_model: 使用中级GPU型号
-        :param low_model: 使用低级GPU型号
+            Set the emulator GPU model.
+        :param gpu_model_name: custom GPU model
+        :param top_model: use the high-end GPU preset
+        :param middle_model: use the mid-range GPU preset
+        :param low_model: use the low-end GPU preset
         :return:
         """
         if top_model:

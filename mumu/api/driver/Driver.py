@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time : 2024/7/29 下午2:41
+# @Time : 2024/7/29 14:41
 # @Author : wlkjyy
 # @File : Driver.py
 # @Software: PyCharm
@@ -13,13 +13,13 @@ class Driver:
         self.utils = utils
 
     """
-        根据官方文档，目前仅支持“网络桥接”驱动
+        Per the official docs, only the "network bridge" driver is supported for now.
     """
 
     @property
     def bridge(self):
         """
-            网络桥接驱动
+            Network bridge driver.
         :return:
         """
 

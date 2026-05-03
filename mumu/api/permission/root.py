@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time : 2024/7/29 下午2:17
+# @Time : 2024/7/29 14:17
 # @Author : wlkjyy
 # @File : root.py
 # @Software: PyCharm
@@ -15,7 +15,7 @@ class Root:
 
     def disable(self):
         """
-            关闭模拟器Root权限
+            Disable emulator root permission.
         :return:
         """
         self.utils.set_operate("setting")
@@ -28,7 +28,7 @@ class Root:
 
     def enable(self):
         """
-            启用模拟器Root权限
+            Enable emulator root permission.
         :return:
         """
         self.utils.set_operate("setting")

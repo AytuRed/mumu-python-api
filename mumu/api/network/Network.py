@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time : 2024/7/29 下午2:44
+# @Time : 2024/7/29 14:44
 # @Author : wlkjyy
 # @File : Network.py
 # @Software: PyCharm
@@ -14,7 +14,7 @@ class Network:
 
     def get_bridge_card(self):
         """
-            获取所有网桥适配器
+            Get all bridge adapters.
         :return:
         """
         card = Setting(self.utils).get('net_bridge_card.list')
@@ -35,7 +35,7 @@ class Network:
 
     def nat(self):
         """
-            设置为NAT
+            Set the network to NAT mode.
         :return:
         """
         return Setting(self.utils).set(
@@ -44,8 +44,9 @@ class Network:
 
     def bridge(self, enable: bool = True, net_bridge_card: str = None):
         """
-            是否启用网桥
-        :param enable: 是否启用
+            Enable or disable the bridge.
+        :param enable: whether to enable
+        :param net_bridge_card: bridge adapter to use
         :return:
         """
         return Setting(self.utils).set(
@@ -55,7 +56,7 @@ class Network:
 
     def bridge_dhcp(self):
         """
-            设置网桥为DHCP
+            Configure the bridge to use DHCP.
         :return:
         """
         return Setting(self.utils).set(
@@ -64,10 +65,10 @@ class Network:
 
     def bridge_static(self, ip_addr: str, subnet_mask: str, gateway: str, dns1: str = '8.8.8.8', dns2: str='114.114.114.114'):
         """
-            设置网桥为静态
-        :param ip_addr: ip地址
-        :param subnet_mask: 子网掩码
-        :param gateway: 网关
+            Configure the bridge with a static IP.
+        :param ip_addr: IP address
+        :param subnet_mask: subnet mask
+        :param gateway: gateway
         :param dns1: DNS1
         :param dns2: DNS2
         :return:

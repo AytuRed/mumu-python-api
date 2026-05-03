@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time : 2024/7/29 下午8:54
+# @Time : 2024/7/29 20:54
 # @Author : wlkjyy
 # @File : screen.py.py
 # @Software: PyCharm
@@ -16,7 +16,7 @@ class Screen:
 
     def resolution(self, width: int, height: int):
         """
-            修改分辨率
+            Change the resolution.
         :param width:
         :param height:
         :return:
@@ -28,7 +28,7 @@ class Screen:
 
     def resolution_mobile(self):
         """
-            设置为手机分辨率
+            Set the mobile-phone resolution preset.
         :return:
         """
         self.resolution(width=1080, height=1920)
@@ -36,7 +36,7 @@ class Screen:
 
     def resolution_tablet(self):
         """
-            设置为平板分辨率
+            Set the tablet resolution preset.
         :return:
         """
         self.resolution(width=1920, height=1080)
@@ -44,7 +44,7 @@ class Screen:
 
     def resolution_ultrawide(self):
         """
-            设置为超宽屏分辨率
+            Set the ultra-wide resolution preset.
         :return:
         """
         self.resolution(width=3200, height=1440)
@@ -52,7 +52,7 @@ class Screen:
 
     def dpi(self, dpi: int):
         """
-            修改dpi
+            Change the DPI.
         :param dpi:
         :return:
         """
@@ -62,8 +62,8 @@ class Screen:
 
     def brightness(self, brightness: int):
         """
-            修改模拟器亮度
-        :param brightness: 亮度值 1-100
+            Set the emulator brightness.
+        :param brightness: brightness value 1-100
         :return:
         """
         brightness = max(1, min(100, brightness))
@@ -74,8 +74,8 @@ class Screen:
 
     def max_frame_rate(self, frame_rate: int = 60):
         """
-            修改模拟器最大帧率
-        :param frame_rate: 最大帧率 1-240
+            Set the emulator maximum frame rate.
+        :param frame_rate: max frame rate (1-240)
         :return:
         """
         frame_rate = max(1, min(240, frame_rate))
@@ -86,9 +86,9 @@ class Screen:
 
     def dynamic_adjust_frame_rate(self, enable: bool, dynamic_low_frame_rate_limit: int = 15):
         """
-            是否开启动态调整帧率
-        :param enable: 是否开启
-        :param dynamic_low_frame_rate_limit: 当主操作窗口不是本模拟器时候，降低帧率到多少
+            Enable or disable dynamic frame-rate adjustment.
+        :param enable: whether to enable
+        :param dynamic_low_frame_rate_limit: target frame rate when this emulator is not the active window
         :return:
         """
         return Setting(self.utils).set(
@@ -98,8 +98,8 @@ class Screen:
 
     def vertical_sync(self, enable: bool):
         """
-            是否开启垂直同步
-        :param enable: 是否开启
+            Enable or disable vertical sync.
+        :param enable: whether to enable
         :return:
         """
         return Setting(self.utils).set(
@@ -108,8 +108,8 @@ class Screen:
 
     def show_frame_rate(self, enable: bool):
         """
-            是否显示帧率
-        :param enable: 是否显示
+            Show or hide the frame-rate overlay.
+        :param enable: whether to show
         :return:
         """
         return Setting(self.utils).set(
@@ -118,10 +118,10 @@ class Screen:
 
     def window_auto_rotate(self, enable: bool):
         """
-            是否开启窗口自动旋转
+            Enable or disable window auto-rotation.
 
-            开启后，模拟器会根据程序自动旋转窗口
-        :param enable: 是否开启
+            When enabled, the emulator window rotates automatically based on the running app.
+        :param enable: whether to enable
         :return:
         """
         return Setting(self.utils).set(

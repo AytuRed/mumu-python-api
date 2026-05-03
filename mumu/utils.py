@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time : 2024/7/28 下午10:25
+# @Time : 2024/7/28 22:25
 # @Author : wlkjyy
 # @File : utils.py
 # @Software: PyCharm
@@ -20,7 +20,7 @@ class utils:
 
     def set_vm_index(self, vm_index):
         """
-        设置虚拟机索引
+        Set the virtual machine (emulator) index.
         :param vm_index:
         :return:
         """
@@ -30,7 +30,7 @@ class utils:
 
     def set_operate(self, operate: Union[str, list]):
         """
-        设置操作
+        Set the operation.
         :param operate:
         :return:
         """
@@ -39,7 +39,7 @@ class utils:
 
     def set_mumu_root_object(self, mumu_root_object):
         """
-        设置mumu_root_object
+        Set the mumu_root_object.
         :param mumu_root_object:
         :return:
         """
@@ -68,7 +68,7 @@ class utils:
 
     def run_command(self, command, mumu=True):
         """
-        执行命令
+        Execute a command.
         :param mumu:
         :param command:
         :return:

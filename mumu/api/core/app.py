@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time : 2024/7/29 下午3:26
+# @Time : 2024/7/29 15:26
 # @Author : wlkjyy
 # @File : app.py
 # @Software: PyCharm
@@ -17,8 +17,8 @@ class App:
 
     def install(self, apk_path: str = None) -> bool:
         """
-            安装应用到模拟器里(install)
-        :param apk_path: 选择要安装的应用apk文件路径（支持apk/xapk/apks后缀）
+            Install an app into the emulator.
+        :param apk_path: path to the apk file (supports .apk/.xapk/.apks)
         :return:
         """
         if not os.path.exists(apk_path):
@@ -37,8 +37,8 @@ class App:
 
     def uninstall(self,package: str) -> bool:
         """
-            卸载应用(uninstall)
-        :param package: 选择要卸载的应用包名
+            Uninstall an app.
+        :param package: package name to uninstall
         :return:
         """
         self.utils.set_operate('control')
@@ -51,8 +51,8 @@ class App:
 
     def launch(self,package: str) -> bool:
         """
-            启动应用(launch)
-        :param package: 选择要启动的应用包名
+            Launch an app.
+        :param package: package name to launch
         :return:
         """
         self.utils.set_operate('control')
@@ -65,8 +65,8 @@ class App:
 
     def close(self,package: str) -> bool:
         """
-            关闭应用(close)
-        :param package: 选择要关闭的应用包名
+            Close an app.
+        :param package: package name to close
         :return:
         """
         self.utils.set_operate('control')
@@ -79,7 +79,7 @@ class App:
 
     def get_installed(self):
         """
-            获取已安装的应用(get_installed)
+            Get installed apps.
         :return:
         """
         self.utils.set_operate('control')
@@ -104,8 +104,8 @@ class App:
 
     def exists(self,package: str) -> bool:
         """
-            判断应用是否存在(exists)
-        :param package: 选择要判断的应用包名
+            Check whether an app is installed.
+        :param package: package name to check
         :return:
         """
         self.utils.set_operate('control')
@@ -120,16 +120,16 @@ class App:
 
     def doesntExists(self,package: str) -> bool:
         """
-            判断应用是否不存在(doesntExists)
-        :param package: 选择要判断的应用包名
+            Check whether an app is NOT installed.
+        :param package: package name to check
         :return:
         """
         return not self.exists(package)
 
     def state(self,package: str) -> str:
         """
-            获取应用状态(state)
-        :param package: 选择要获取的应用包名
+            Get the app state.
+        :param package: package name to query
         :return:
         """
         self.utils.set_operate('control')

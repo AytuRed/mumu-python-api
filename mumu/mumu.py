@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time : 2024/7/28 下午9:36
+# @Time : 2024/7/28 21:36
 # @Author : wlkjyy
 # @File : mumu.py
 # @Software: PyCharm
@@ -33,6 +33,8 @@ class Mumu:
         r"D:\Program Files\Netease\MuMu Player 12\shell\MuMuManager.exe",
         r"C:\Program Files\Netease\MuMu\nx_main\MuMuManager.exe",
         r"D:\Program Files\Netease\MuMu\nx_main\MuMuManager.exe",
+        r"C:\Program Files\Netease\MuMuPlayerGlobal-12.0\nx_main\MuMuManager.exe",
+        r"D:\Program Files\Netease\MuMuPlayerGlobal-12.0\nx_main\MuMuManager.exe",
     )
 
     def __init__(self, mumu_manager_path=None):
@@ -83,9 +85,9 @@ class Mumu:
 
     def select(self, vm_index: Union[int, list, tuple] = None, *args):
         """
-            选择要操作的模拟器索引
-        :param vm_index: 模拟器索引
-        :param args: 更多的模拟器索引
+            Select the emulator index(es) to operate on.
+        :param vm_index: emulator index
+        :param args: additional emulator indexes
         :return:
 
         Example:
@@ -132,7 +134,7 @@ class Mumu:
 
     def all(self):
         """
-            选择所有模拟器
+            Select all emulators.
         :return:
         """
         self.__set_vm_index('all')
@@ -141,7 +143,7 @@ class Mumu:
     @property
     def core(self) -> Core:
         """
-            模拟器类
+            Core emulator API.
         :return:
         """
         return Core(self.generate_utils())
@@ -149,9 +151,7 @@ class Mumu:
     @property
     def driver(self) -> Driver:
         """
-            驱动类
-
-            已完成
+            Driver API.
         :return:
         """
 
@@ -160,9 +160,7 @@ class Mumu:
     @property
     def permission(self) -> Permission:
         """
-            权限类
-
-            已完成
+            Permission API.
         :return:
         """
         return Permission(self.generate_utils())
@@ -170,9 +168,7 @@ class Mumu:
     @property
     def power(self):
         """
-            电源类
-
-            已完成
+            Power API.
         :return:
         """
         return Power(self.generate_utils())
@@ -180,9 +176,7 @@ class Mumu:
     @property
     def window(self) -> Window:
         """
-            窗口类
-
-            已完成
+            Window API.
         :return:
         """
 
@@ -191,9 +185,7 @@ class Mumu:
     @property
     def app(self) -> App:
         """
-            app类
-
-            已完成
+            App API.
         :return:
         """
 
@@ -202,9 +194,7 @@ class Mumu:
     @property
     def androidEvent(self) -> AndroidEvent:
         """
-            安卓事件类
-
-            已完成
+            Android event API.
         :return:
         """
         return AndroidEvent(self.generate_utils())
@@ -212,9 +202,7 @@ class Mumu:
     @property
     def shortcut(self) -> Shortcut:
         """
-            快捷方式类
-
-            已完成
+            Shortcut API.
         :return:
         """
         return Shortcut(self.generate_utils())
@@ -222,9 +210,7 @@ class Mumu:
     @property
     def simulation(self) -> Simulation:
         """
-            机型类（这玩意很鸡肋，没什么用）
-
-            已完成
+            Device simulation API (model/IMEI/etc.).
         :return:
         """
         return Simulation(self.generate_utils())
@@ -232,7 +218,7 @@ class Mumu:
     @property
     def setting(self) -> Setting:
         """
-            配置类
+            Settings API.
         :return:
         """
 
@@ -241,7 +227,7 @@ class Mumu:
     @property
     def screen(self) -> Screen:
         """
-            屏幕类
+            Screen API.
         :return:
         """
         return Screen(self.generate_utils())
@@ -249,7 +235,7 @@ class Mumu:
     @property
     def performance(self) -> Performance:
         """
-            性能类
+            Performance API.
         :return:
         """
         return Performance(self.generate_utils())
@@ -257,7 +243,7 @@ class Mumu:
     @property
     def network(self):
         """
-            网路操作类
+            Network API.
         :return:
         """
 
@@ -266,7 +252,7 @@ class Mumu:
     @property
     def adb(self) -> Adb:
         """
-            ADB类
+            ADB API.
         :return:
         """
         return Adb(self.generate_utils())
@@ -274,7 +260,7 @@ class Mumu:
     @property
     def auto(self):
         """
-            GUI自动化类
+            GUI automation API.
         :return:
         """
         try:

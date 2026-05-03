@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time : 2024/7/29 下午7:35
+# @Time : 2024/7/29 19:35
 # @Author : wlkjyy
 # @File : constant.py
 # @Software: PyCharm
@@ -13,7 +13,7 @@ class MacAddress:
     @staticmethod
     def random() -> str:
         """
-            生成一个随机的MAC地址
+            Generate a random MAC address.
         :return:
         """
         mac = [random.randint(0x00, 0xff) for _ in range(6)]
@@ -25,9 +25,9 @@ class IMEI:
     @staticmethod
     def random() -> str:
         """
-            生成一个随机的IMEI
+            Generate a random IMEI.
 
-            来源：chatgpt-3.5
+            Source: chatgpt-3.5
         :return:
         """
         # Generate TAC (first 8 digits)
@@ -63,7 +63,7 @@ class IMSI:
     @staticmethod
     def random() -> str:
         """
-            生成一个随机的IMSI
+            Generate a random IMSI.
         :return:
         """
         mcc = random.choice(['302', '310', '334', '460'])  # Example MCCs for demonstration
@@ -85,7 +85,7 @@ class AndroidID:
     @staticmethod
     def random() -> str:
         """
-            生成一个随机的AndroidId
+            Generate a random Android ID.
         :return:
         """
         return ''.join(random.choices('0123456789abcdef', k=16))
@@ -96,7 +96,7 @@ class PhoneNumber:
     @staticmethod
     def random() -> str:
         """
-            生成一个随机的手机号
+            Generate a random phone number.
         :return:
         """
         prefix = random.choice(['130', '131', '132', '133', '134', '135', '136', '137', '138', '139',
@@ -107,86 +107,86 @@ class PhoneNumber:
 
 
 class GPU:
-    # 顶配型号
+    # High-end model
     TOP_MODEL = 'Adreno (TM) 740'
 
-    # 中配型号
+    # Mid-range model
     MIDDLE_MODEL = 'Adreno (TM) 640'
 
-    # 低配型号
+    # Low-end model
     LOW_MODEL = 'Adreno (TM) 530'
 
 
 class AndroidKey:
-    # 菜单键
+    # Menu key
     KEYCODE_MENU = 1
 
-    # 回到桌面
+    # Home (back to desktop)
     KEYCODE_HOME = 3
 
-    # 返回键
+    # Back key
     KEYCODE_BACK = 4
 
-    # 拨号键
+    # Call key
     KEYCODE_CALL = 5
 
-    # 挂断键
+    # End-call key
     KEYCODE_ENDCALL = 6
 
-    # 搜索键
+    # Search key
     KEYCODE_SEARCH = 84
 
-    # 拍照键
+    # Camera shutter key
     KEYCODE_CAMERA = 27
 
-    # 相机对焦键
+    # Camera focus key
     KEYCODE_FOCUS = 80
 
-    # 电源键
+    # Power key
     KEYCODE_POWER = 26
 
-    # 通知键
+    # Notification key
     KEYCODE_NOTIFICATION = 83
 
-    # 禁音键
+    # Mute key
     KEYCODE_MUTE = 91
 
-    # 扬声器静音键
+    # Speaker mute key
     KEYCODE_VOLUME_MUTE = 164
 
-    # 音量增加键
+    # Volume up key
     KEYCODE_VOLUME_UP = 24
 
-    # 音量减小键
+    # Volume down key
     KEYCODE_VOLUME_DOWN = 25
 
-    # 回车键
+    # Enter key
     KEYCODE_ENTER = 66
 
-    # ESC键
+    # ESC key
     KEYCODE_ESCAPE = 111
 
-    # 导航键
+    # D-Pad center
     KEYCODE_DPAD_CENTER = 23
 
-    # 向上导航键
+    # D-Pad up
     KEYCODE_DPAD_UP = 19
 
-    # 向下导航键
+    # D-Pad down
     KEYCODE_DPAD_DOWN = 20
 
-    # 向左导航键
+    # D-Pad left
     KEYCODE_DPAD_LEFT = 21
 
-    # 向右导航键
+    # D-Pad right
     KEYCODE_DPAD_RIGHT = 22
 
-    # 退格
+    # Delete / backspace
     KEYCODE_DEL = 67
 
     # TAB
     KEYCODE_TAB = 61
 
-    # 放大键
+    # Zoom-in key
     KEYCODE_ZOOM_IN = 168
 

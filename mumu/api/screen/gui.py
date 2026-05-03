@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time : 2024/7/30 下午3:06
+# @Time : 2024/7/30 15:06
 # @Author : wlkjyy
 # @File : gui.py
 # @Software: PyCharm
@@ -24,7 +24,7 @@ class Gui:
 
     def __connect(self):
         """
-            获取可用的连接
+            Get an available connection.
         :return:
         """
 
@@ -206,10 +206,10 @@ class Gui:
 
     def create_handle(self, handle_func, backend: str = "auto", fps: int = 30):
         """
-            创建帧处理函数
-        :param handle_func: 每帧回调函数，签名为 handle(frame, mumu)
+            Create a frame-handler.
+        :param handle_func: per-frame callback with signature handle(frame, mumu)
         :param backend: auto/mumu_sdk/scrcpy
-        :param fps: mumu_sdk 轮询帧率，默认 30
+        :param fps: polling frame rate for the mumu_sdk backend (default 30)
         :return:
         """
         backend = (backend or "auto").lower()
@@ -239,11 +239,11 @@ class Gui:
 
     def locateOnScreen(self, haystack_frame, needle_image, confidence=0.8, grayscale=None):
         """
-            在屏幕上查找图片
-        :param haystack_frame: 屏幕帧
-        :param needle_image: 图片
-        :param confidence: 置信度
-        :param grayscale: 灰度值找图
+            Locate an image on the screen.
+        :param haystack_frame: screen frame
+        :param needle_image: image to find
+        :param confidence: match confidence
+        :param grayscale: match in grayscale
         :return:
         """
         needle_image = _load_cv2(needle_image)
@@ -256,7 +256,7 @@ class Gui:
 
     def center(self, box):
         """
-            获取中心点
+            Get the center point of a box.
         :param box: Box
         :return:
         """
@@ -264,11 +264,11 @@ class Gui:
 
     def locateCenterOnScreen(self, haystack_frame, needle_image, confidence=0.8, grayscale=None):
         """
-            在屏幕上查找图片
-        :param haystack_frame: 屏幕帧
-        :param needle_image: 图片
-        :param confidence: 置信度
-        :param grayscale: 灰度值找图
+            Locate an image on the screen and return its center point.
+        :param haystack_frame: screen frame
+        :param needle_image: image to find
+        :param confidence: match confidence
+        :param grayscale: match in grayscale
         :return:
         """
         needle_image = _load_cv2(needle_image)
@@ -281,11 +281,11 @@ class Gui:
 
     def locateAllOnScreen(self, haystack_frame, needle_image, confidence=0.8, grayscale=None):
         """
-            在屏幕上查找所有图片
-        :param haystack_frame: 屏幕帧
-        :param needle_image: 图片
-        :param confidence: 置信度
-        :param grayscale: 灰度值找图
+            Locate all matches of an image on the screen.
+        :param haystack_frame: screen frame
+        :param needle_image: image to find
+        :param confidence: match confidence
+        :param grayscale: match in grayscale
         :return:
         """
         arr = []
@@ -299,8 +299,8 @@ class Gui:
 
     def save(self, frame, path):
         """
-            保存帧
-        :param path: 路径
+            Save a frame to disk.
+        :param path: destination path
         :return:
         """
         cv2.imwrite(path, frame)
